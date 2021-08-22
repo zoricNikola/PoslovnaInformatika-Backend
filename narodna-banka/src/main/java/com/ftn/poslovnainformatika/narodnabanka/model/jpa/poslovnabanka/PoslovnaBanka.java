@@ -1,12 +1,14 @@
 package com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.ObracunskiRacun;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "poslovna_banka")
@@ -29,5 +31,13 @@ public class PoslovnaBanka {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "obracunski_racun", referencedColumnName = "broj_obracunskog_racuna", nullable = false)
     private ObracunskiRacun obracunskiRacun;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "bankaDuznika")
+    private Set<Poruka> porukeBankeDuznika;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "bankaPoverioca")
+    private Set<Poruka> porukeBankePoverioca;
+
+    //jos ostaje referenca ka entitetima Racun i PorukaObavestenja koji jos nisu kreirani
 
 }
