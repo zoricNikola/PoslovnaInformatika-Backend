@@ -2,6 +2,8 @@ package com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.ObracunskiRacun;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.PorukaObavestenja;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Racun;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +40,10 @@ public class PoslovnaBanka {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "bankaPoverioca")
     private Set<Poruka> porukeBankePoverioca;
 
-    //jos ostaje referenca ka entitetima Racun i PorukaObavestenja koji jos nisu kreirani
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poslovnaBanka")
+    private Set<Racun> racuni;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poslovnaBanka")
+    private Set<PorukaObavestenja> porukeObavestenja;
 
 }
