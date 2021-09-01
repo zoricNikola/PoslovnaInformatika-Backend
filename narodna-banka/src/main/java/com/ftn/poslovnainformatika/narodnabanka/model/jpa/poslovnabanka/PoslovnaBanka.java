@@ -21,6 +21,7 @@ import java.util.Set;
 public class PoslovnaBanka {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sifra_banke", unique = true, nullable = false)
     private Integer sifraBanke;
 
