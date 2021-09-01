@@ -1,6 +1,7 @@
 package com.ftn.poslovnainformatika.narodnabanka.dto.impl;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.impl.poslovnabanka.PoslovnaBankaDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.porukaobavestenja.PorukaObavestenjaViewDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PorukaObavestenjaDTO {
+public class PorukaObavestenjaDTO  implements PorukaObavestenjaViewDTO {
     private int id;
     private VrstaPoruke vrstaPoruke;
     private String swiftKod;

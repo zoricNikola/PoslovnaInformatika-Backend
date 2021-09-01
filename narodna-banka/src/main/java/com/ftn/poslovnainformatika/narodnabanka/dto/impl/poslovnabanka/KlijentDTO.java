@@ -2,7 +2,7 @@ package com.ftn.poslovnainformatika.narodnabanka.dto.impl.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.klijent.KlijentViewDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.mesto.MestoViewDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.sifarnikdelatnosti.SifarnikDelatnostiViewDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.porukaobavestenja.PorukaObavestenjaViewDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +28,6 @@ public class KlijentDTO implements KlijentViewDTO {
 
     private MestoViewDTO mesto;
 
-    private SifarnikDelatnostiViewDTO sifarnikDelatnosti;
+    private PorukaObavestenjaViewDTO sifarnikDelatnosti;
 
 }

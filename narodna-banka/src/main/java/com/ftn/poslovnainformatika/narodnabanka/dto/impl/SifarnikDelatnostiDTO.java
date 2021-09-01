@@ -1,6 +1,7 @@
 package com.ftn.poslovnainformatika.narodnabanka.dto.impl;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.impl.poslovnabanka.KlijentDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.sifarnikdelatnosti.SifarnikDelatnostiViewDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SifarnikDelatnostiDTO {
+public class SifarnikDelatnostiDTO implements SifarnikDelatnostiViewDTO {
     private int id;
     private double sifraDelatnosti;
     private String nazivDelatnosti;

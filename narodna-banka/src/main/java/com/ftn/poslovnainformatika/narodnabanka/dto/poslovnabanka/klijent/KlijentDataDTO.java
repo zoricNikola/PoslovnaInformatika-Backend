@@ -1,7 +1,7 @@
 package com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.klijent;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.mesto.MestoViewDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.sifarnikdelatnosti.SifarnikDelatnostiViewDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.porukaobavestenja.PorukaObavestenjaViewDTO;
 
 public interface KlijentDataDTO {
 
@@ -23,7 +23,7 @@ public interface KlijentDataDTO {
     MestoViewDTO getMesto();
     void setMesto(MestoViewDTO mesto);
 
-    SifarnikDelatnostiViewDTO getSifarnikDelatnosti();
-    void setSifarnikDelatnosti(SifarnikDelatnostiViewDTO sifarnikDelatnosti);
+    PorukaObavestenjaViewDTO getSifarnikDelatnosti();
+    void setSifarnikDelatnosti(PorukaObavestenjaViewDTO sifarnikDelatnosti);
 
 }
