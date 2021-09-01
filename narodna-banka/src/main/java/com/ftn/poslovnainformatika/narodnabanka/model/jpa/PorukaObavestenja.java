@@ -36,6 +36,9 @@ public class PorukaObavestenja {
     @Column(name = "sifra_valute")
     private String sifraValute;
 
+    @Column(name = "iznos", precision = 15, scale = 2, nullable = false)
+    private double iznos;
+
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "poruka", referencedColumnName = "poruka_id", nullable = false)
     private Poruka poruka;

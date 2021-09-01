@@ -26,6 +26,6 @@ public class SifarnikDelatnosti {
     @Column(name = "naziv_delatnosti", nullable = false)
     private String nazivDelatnosti;
 
-    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "klijent")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "klijent")
     private Klijent klijent;
 }
