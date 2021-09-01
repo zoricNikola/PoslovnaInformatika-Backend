@@ -5,10 +5,12 @@ import com.ftn.poslovnainformatika.narodnabanka.dto.impl.poslovnabanka.KlijentDT
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.klijent.KlijentDataDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.klijent.KlijentViewDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.Klijent;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class KlijentConverter implements DtoConverter<Klijent, KlijentViewDTO, KlijentDataDTO> {
 
     @Override

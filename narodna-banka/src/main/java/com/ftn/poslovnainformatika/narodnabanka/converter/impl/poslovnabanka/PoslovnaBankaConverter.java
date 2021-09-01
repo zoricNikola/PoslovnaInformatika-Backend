@@ -72,14 +72,20 @@ public class PoslovnaBankaConverter implements DtoConverter<PoslovnaBanka, Poslo
 	}
 
 	private PoslovnaBanka convertToPoslovnaBankaJPA(PoslovnaBankaDTO source) {
-		if(source == null) throw new NullPointerException();
+		if(source == null || source.getObracunskiRacun() == null) throw new NullPointerException();
 
-		Optional<ObracunskiRacun> obracunskiRacun = obracunskiRacunRepo.findByPoslovnaBanka_SifraBanke(source.getId());
-		if(obracunskiRacun.isEmpty()) throw new EntityNotFoundException();
+		PoslovnaBanka poslovnaBanka = new PoslovnaBanka();
+		poslovnaBanka.setNazivBanke(source.getNazivBanke());
+		poslovnaBanka.setSwiftKod(source.getSwiftKod());
+		poslovnaBanka.setPorukeBankeDuznika(new HashSet<>());
+		poslovnaBanka.setPorukeBankePoverioca(new HashSet<>());
+		poslovnaBanka.setPorukeObavestenja(new HashSet<>());
 
-		PoslovnaBanka poslovnaBanka = new PoslovnaBanka(source.getId(), source.getNazivBanke(), source.getSwiftKod(),
-				obracunskiRacun.get(), new HashSet<Poruka>(), new HashSet<Poruka>(), new HashSet<Racun>(),
-				new HashSet<PorukaObavestenja>());
+		ObracunskiRacun obracunskiRacun = new ObracunskiRacun();
+		obracunskiRacun.setBrojObracunskogRacuna(source.getObracunskiRacun().getBrojObracunskogRacuna());
+		obracunskiRacun.setDnevnaStanja(new HashSet<>());
+		obracunskiRacun.setPoslovnaBanka(poslovnaBanka);
+		poslovnaBanka.setObracunskiRacun(obracunskiRacun);
 
 		return poslovnaBanka;
 	}
