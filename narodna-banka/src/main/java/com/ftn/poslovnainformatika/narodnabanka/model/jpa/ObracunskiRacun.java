@@ -26,8 +26,4 @@ public class ObracunskiRacun {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "obracunskiRacun")
     private Set<DnevnoStanje> dnevnaStanja;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "narodna_banka_id", referencedColumnName = "narodna_banka_id", nullable = false)
-    private NarodnaBanka narodnaBanka;
 }
