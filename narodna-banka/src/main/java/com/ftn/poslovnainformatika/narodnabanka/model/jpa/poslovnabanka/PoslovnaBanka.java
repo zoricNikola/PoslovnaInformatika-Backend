@@ -2,7 +2,7 @@ package com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.ObracunskiRacun;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
-import com.ftn.poslovnainformatika.narodnabanka.model.jpa.PorukaObavestenja;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Obavestenje;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +44,6 @@ public class PoslovnaBanka {
     private Set<TekuciRacun> racuni;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poslovnaBanka")
-    private Set<PorukaObavestenja> porukeObavestenja;
+    private Set<Obavestenje> obavestenja;
 
 }

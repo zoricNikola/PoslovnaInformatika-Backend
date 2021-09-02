@@ -2,14 +2,14 @@ package com.ftn.poslovnainformatika.narodnabanka.converter;
 
 import java.util.Set;
 
-public interface DtoConverter<JPA, ViewDTO, DataDTO> {
+public interface DtoConverter<JPA, DTO> {
 	
-	ViewDTO convertToDTO(JPA source);
+	DTO convertToDTO(JPA source);
 	
-	Set<ViewDTO> convertToDTO(Set<JPA> sources);
+	Set<DTO> convertToDTO(Set<JPA> sources);
 	
-	JPA convertToJPA(DataDTO source);
+	JPA convertToJPA(DTO source);
 	
-	Set<JPA> convertToJPA(Set<DataDTO> sources);
+	Set<JPA> convertToJPA(Set<DTO> sources);
 
 }

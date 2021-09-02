@@ -1,8 +1,6 @@
-package com.ftn.poslovnainformatika.narodnabanka.dto.impl;
+package com.ftn.poslovnainformatika.narodnabanka.dto;
 
 import java.time.LocalDate;
-
-import com.ftn.poslovnainformatika.narodnabanka.dto.nalog.NalogViewDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +11,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NalogDTO implements NalogViewDTO {
+public class NalogDTO {
 	
-	private int id;
+	private Integer id;
 	
 	private String duznik;
 	
@@ -27,7 +25,7 @@ public class NalogDTO implements NalogViewDTO {
 	
 	private String svrhaPlacanja;
 	
-	private double iznos;
+	private Double iznos;
 	
 	private String sifraValute;
 	
@@ -42,5 +40,7 @@ public class NalogDTO implements NalogViewDTO {
 	private Integer modelZaduzenja;
 	
 	private Integer modelOdobrenja;
+	
+	private PorukaDTO poruka;
 	
 }

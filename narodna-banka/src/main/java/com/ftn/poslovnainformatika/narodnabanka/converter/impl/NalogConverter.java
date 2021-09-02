@@ -6,36 +6,34 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
-import com.ftn.poslovnainformatika.narodnabanka.dto.impl.NalogDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.nalog.NalogDataDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.nalog.NalogViewDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.NalogDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Nalog;
 
 @Component
-public class NalogConverter implements DtoConverter<Nalog, NalogViewDTO, NalogDataDTO> {
+public class NalogConverter implements DtoConverter<Nalog, NalogDTO> {
 
 	@Override
-	public NalogViewDTO convertToDTO(Nalog source) {
+	public NalogDTO convertToDTO(Nalog source) {
 		
 		NalogDTO dto = new NalogDTO(source.getId(), source.getDuznik(), source.getPoverilac(), 
 				source.getRacunDuznika(), source.getRacunPoverioca(), source.getSvrhaPlacanja(), 
 				source.getIznos(), source.getSifraValute(), source.getDatum(), source.isHitno(), 
 				source.getPozivNaBrojZaduzenja(), source.getPozivNaBrojOdobrenja(), 
-				source.getModelZaduzenja(), source.getModelOdobrenja());
+				source.getModelZaduzenja(), source.getModelOdobrenja(), null);
 		
 		return dto;
 	}
 
 	@Override
-	public Set<NalogViewDTO> convertToDTO(Set<Nalog> sources) {
+	public Set<NalogDTO> convertToDTO(Set<Nalog> sources) {
 
-		Set<NalogViewDTO> result = new HashSet<>();
+		Set<NalogDTO> result = new HashSet<>();
 		for (Nalog jpa : sources) result.add(convertToDTO(jpa));
 		return result;
 	}
 	
 	@Override
-	public Nalog convertToJPA(NalogDataDTO source) {
+	public Nalog convertToJPA(NalogDTO source) {
 		
 		Nalog jpa = new Nalog(null, source.getDuznik(), source.getPoverilac(), source.getRacunDuznika(), 
 				source.getRacunPoverioca(), source.getSvrhaPlacanja(), source.getIznos(), 
@@ -46,10 +44,10 @@ public class NalogConverter implements DtoConverter<Nalog, NalogViewDTO, NalogDa
 	}
 
 	@Override
-	public Set<Nalog> convertToJPA(Set<NalogDataDTO> sources) {
+	public Set<Nalog> convertToJPA(Set<NalogDTO> sources) {
 
 		Set<Nalog> result = new HashSet<>();
-		for (NalogDataDTO dto : sources) result.add(convertToJPA(dto));
+		for (NalogDTO dto : sources) result.add(convertToJPA(dto));
 		return result;
 	}
 

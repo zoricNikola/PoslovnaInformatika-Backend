@@ -1,11 +1,8 @@
 package com.ftn.poslovnainformatika.narodnabanka.converter.impl;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
-import com.ftn.poslovnainformatika.narodnabanka.dto.dnevnostanje.DnevnoStanjeDataDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.dnevnostanje.DnevnoStanjeViewDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.impl.DnevnoStanjeDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.obracunskiracun.ObracunskiRacunDataDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.obracunskiracun.ObracunskiRacunViewDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.DnevnoStanjeDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.ObracunskiRacunDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.DnevnoStanje;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.ObracunskiRacun;
 import com.ftn.poslovnainformatika.narodnabanka.repository.ObracunskiRacunRepository;
@@ -18,22 +15,22 @@ import java.util.Optional;
 import java.util.Set;
 
 @Component
-public class DnevnoStanjeConverter implements DtoConverter<DnevnoStanje, DnevnoStanjeViewDTO, DnevnoStanjeDataDTO> {
+public class DnevnoStanjeConverter implements DtoConverter<DnevnoStanje, DnevnoStanjeDTO> {
 
     @Autowired
-    private DtoConverter<ObracunskiRacun, ObracunskiRacunViewDTO, ObracunskiRacunDataDTO> obracunskiRacunConverter;
+    private DtoConverter<ObracunskiRacun, ObracunskiRacunDTO> obracunskiRacunConverter;
 
     @Autowired
     private ObracunskiRacunRepository obracunskiRacunRepo;
 
     @Override
-    public DnevnoStanjeViewDTO convertToDTO(DnevnoStanje source) {
+    public DnevnoStanjeDTO convertToDTO(DnevnoStanje source) {
         return convertToDnevnoStanjeDTO(source);
     }
 
     @Override
-    public Set<DnevnoStanjeViewDTO> convertToDTO(Set<DnevnoStanje> sources) {
-        Set<DnevnoStanjeViewDTO> result = new HashSet<>();
+    public Set<DnevnoStanjeDTO> convertToDTO(Set<DnevnoStanje> sources) {
+        Set<DnevnoStanjeDTO> result = new HashSet<>();
 
         if(sources != null && !sources.isEmpty()){
             sources.forEach(dnevnoStanje -> result.add(convertToDTO(dnevnoStanje)));
@@ -42,12 +39,12 @@ public class DnevnoStanjeConverter implements DtoConverter<DnevnoStanje, DnevnoS
     }
 
     @Override
-    public DnevnoStanje convertToJPA(DnevnoStanjeDataDTO source) {
+    public DnevnoStanje convertToJPA(DnevnoStanjeDTO source) {
         return convertToDnevnoStanjeJPA((DnevnoStanjeDTO) source);
     }
 
     @Override
-    public Set<DnevnoStanje> convertToJPA(Set<DnevnoStanjeDataDTO> sources) {
+    public Set<DnevnoStanje> convertToJPA(Set<DnevnoStanjeDTO> sources) {
         Set<DnevnoStanje> result = new HashSet<>();
 
         if(sources != null && !sources.isEmpty()){
@@ -61,7 +58,7 @@ public class DnevnoStanjeConverter implements DtoConverter<DnevnoStanje, DnevnoS
 
         DnevnoStanjeDTO dnevnoStanjeDTO = new DnevnoStanjeDTO(source.getId(), source.getDatum(), source.getPrethodnoStanje(),
                 source.getPrometNaTeret(), source.getPrometUKorist(), source.getNovoStanje(),
-                obracunskiRacunConverter.convertToDTO(source.getObracunskiRacun()), null);
+                obracunskiRacunConverter.convertToDTO(source.getObracunskiRacun()));
 
         return dnevnoStanjeDTO;
     }

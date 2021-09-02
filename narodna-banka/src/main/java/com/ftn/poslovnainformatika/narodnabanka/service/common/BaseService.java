@@ -1,12 +1,12 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.common;
 
-public interface BaseService<ViewDTO, DataDTO> {
+public interface BaseService<DTO> {
 	
-	public ViewDTO getOne(int id);
+	public DTO getOne(int id);
 	
-	public int create(DataDTO dto);
+	public int create(DTO dto);
 	
-	public void update(int id, DataDTO dto);
+	public void update(int id, DTO dto);
 	
 	public void delete(int id);
 

@@ -1,9 +1,7 @@
 package com.ftn.poslovnainformatika.narodnabanka.converter.impl.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
-import com.ftn.poslovnainformatika.narodnabanka.dto.impl.poslovnabanka.KlijentDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.klijent.KlijentDataDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.klijent.KlijentViewDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.KlijentDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.Klijent;
 import org.springframework.stereotype.Component;
 
@@ -11,16 +9,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class KlijentConverter implements DtoConverter<Klijent, KlijentViewDTO, KlijentDataDTO> {
+public class KlijentConverter implements DtoConverter<Klijent, KlijentDTO> {
 
     @Override
-    public KlijentViewDTO convertToDTO(Klijent source) {
+    public KlijentDTO convertToDTO(Klijent source) {
         return convertToKlijentDTO(source);
     }
 
     @Override
-    public Set<KlijentViewDTO> convertToDTO(Set<Klijent> sources) {
-        Set<KlijentViewDTO> result = new HashSet<>();
+    public Set<KlijentDTO> convertToDTO(Set<Klijent> sources) {
+        Set<KlijentDTO> result = new HashSet<>();
 
         if(sources != null && !sources.isEmpty()){
             sources.forEach(klijent -> result.add(convertToDTO(klijent)));
@@ -29,12 +27,12 @@ public class KlijentConverter implements DtoConverter<Klijent, KlijentViewDTO, K
     }
 
     @Override
-    public Klijent convertToJPA(KlijentDataDTO source) {
+    public Klijent convertToJPA(KlijentDTO source) {
         return convertToKlijentJPA((KlijentDTO) source);
     }
 
     @Override
-    public Set<Klijent> convertToJPA(Set<KlijentDataDTO> sources) {
+    public Set<Klijent> convertToJPA(Set<KlijentDTO> sources) {
         Set<Klijent> result = new HashSet<>();
 
         if(sources != null && !sources.isEmpty()){

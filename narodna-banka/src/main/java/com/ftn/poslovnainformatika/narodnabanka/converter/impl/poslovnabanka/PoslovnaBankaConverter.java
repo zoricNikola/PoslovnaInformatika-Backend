@@ -4,41 +4,38 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import com.ftn.poslovnainformatika.narodnabanka.dto.impl.poslovnabanka.PoslovnaBankaDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.obracunskiracun.ObracunskiRacunDataDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.obracunskiracun.ObracunskiRacunViewDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.ObracunskiRacun;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
-import com.ftn.poslovnainformatika.narodnabanka.model.jpa.PorukaObavestenja;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Obavestenje;
 import com.ftn.poslovnainformatika.narodnabanka.repository.ObracunskiRacunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
-import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.poslovnabanka.PoslovnaBankaDataDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.poslovnabanka.PoslovnaBankaViewDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.ObracunskiRacunDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.PoslovnaBanka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.TekuciRacun;
 
 import javax.persistence.EntityNotFoundException;
 
 @Component
-public class PoslovnaBankaConverter implements DtoConverter<PoslovnaBanka, PoslovnaBankaViewDTO, PoslovnaBankaDataDTO> {
+public class PoslovnaBankaConverter implements DtoConverter<PoslovnaBanka, PoslovnaBankaDTO> {
 
 	@Autowired
-	private DtoConverter<ObracunskiRacun, ObracunskiRacunViewDTO, ObracunskiRacunDataDTO> obracunskiRacunConverter;
+	private DtoConverter<ObracunskiRacun, ObracunskiRacunDTO> obracunskiRacunConverter;
 
 	@Autowired
 	private ObracunskiRacunRepository obracunskiRacunRepo;
 
 	@Override
-	public PoslovnaBankaViewDTO convertToDTO(PoslovnaBanka source) {
+	public PoslovnaBankaDTO convertToDTO(PoslovnaBanka source) {
 		return convertToPoslovnaBankaDTO(source);
 	}
 
 	@Override
-	public Set<PoslovnaBankaViewDTO> convertToDTO(Set<PoslovnaBanka> sources) {
-		Set<PoslovnaBankaViewDTO> result = new HashSet<>();
+	public Set<PoslovnaBankaDTO> convertToDTO(Set<PoslovnaBanka> sources) {
+		Set<PoslovnaBankaDTO> result = new HashSet<>();
 
 		if(sources != null && !sources.isEmpty()){
 			sources.forEach(poslovnaBanka ->  result.add(convertToDTO(poslovnaBanka)));
@@ -47,13 +44,13 @@ public class PoslovnaBankaConverter implements DtoConverter<PoslovnaBanka, Poslo
 	}
 
 	@Override
-	public PoslovnaBanka convertToJPA(PoslovnaBankaDataDTO source) {
+	public PoslovnaBanka convertToJPA(PoslovnaBankaDTO source) {
 		return convertToPoslovnaBankaJPA((PoslovnaBankaDTO) source);
 
 	}
 
 	@Override
-	public Set<PoslovnaBanka> convertToJPA(Set<PoslovnaBankaDataDTO> sources) {
+	public Set<PoslovnaBanka> convertToJPA(Set<PoslovnaBankaDTO> sources) {
 		Set<PoslovnaBanka> result = new HashSet<>();
 
 		if(sources != null && !sources.isEmpty()){
@@ -79,7 +76,7 @@ public class PoslovnaBankaConverter implements DtoConverter<PoslovnaBanka, Poslo
 		poslovnaBanka.setSwiftKod(source.getSwiftKod());
 		poslovnaBanka.setPorukeBankeDuznika(new HashSet<>());
 		poslovnaBanka.setPorukeBankePoverioca(new HashSet<>());
-		poslovnaBanka.setPorukeObavestenja(new HashSet<>());
+		poslovnaBanka.setObavestenja(new HashSet<>());
 
 		ObracunskiRacun obracunskiRacun = new ObracunskiRacun();
 		obracunskiRacun.setBrojObracunskogRacuna(source.getObracunskiRacun().getBrojObracunskogRacuna());

@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
-import com.ftn.poslovnainformatika.narodnabanka.dto.poruka.PorukaDataDTO;
-import com.ftn.poslovnainformatika.narodnabanka.dto.poruka.PorukaViewDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.repository.PorukaRepository;
 
@@ -16,17 +15,17 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	private PorukaRepository porukaRepo;
 	
 	@Autowired
-	private DtoConverter<Poruka, PorukaViewDTO, PorukaDataDTO> porukaConverter;
+	private DtoConverter<Poruka, PorukaDTO> porukaConverter;
 	
 	@Override
-	public PorukaViewDTO getOne(int id) {
+	public PorukaDTO getOne(int id) {
 		Poruka poruka = porukaRepo.findById(id).orElseThrow();
 		
 		return porukaConverter.convertToDTO(poruka);
 	}
 
 	@Override
-	public int create(PorukaDataDTO dto) {
+	public int create(PorukaDTO dto) {
 		Poruka poruka = porukaConverter.convertToJPA(dto);
 		
 //		1. RTGS
@@ -45,7 +44,7 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	}
 
 	@Override
-	public void update(int id, PorukaDataDTO dto) {
+	public void update(int id, PorukaDTO dto) {
 		// TODO Auto-generated method stub
 		
 	}
