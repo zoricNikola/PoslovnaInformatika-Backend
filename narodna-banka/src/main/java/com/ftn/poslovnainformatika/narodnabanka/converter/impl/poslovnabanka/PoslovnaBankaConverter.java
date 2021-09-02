@@ -60,7 +60,7 @@ public class PoslovnaBankaConverter implements DtoConverter<PoslovnaBanka, Poslo
 	}
 
 	private PoslovnaBankaDTO convertToPoslovnaBankaDTO(PoslovnaBanka source) {
-		if(source == null) throw new NullPointerException();
+		if(source == null || source.getObracunskiRacun() == null) throw new NullPointerException();
 
 		PoslovnaBankaDTO poslovnaBankaDTO = new PoslovnaBankaDTO(source.getSifraBanke(), source.getNazivBanke(),
 				source.getSwiftKod(), obracunskiRacunConverter.convertToDTO(source.getObracunskiRacun()));

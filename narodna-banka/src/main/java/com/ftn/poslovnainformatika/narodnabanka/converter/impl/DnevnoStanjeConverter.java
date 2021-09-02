@@ -54,7 +54,7 @@ public class DnevnoStanjeConverter implements DtoConverter<DnevnoStanje, DnevnoS
     }
 
     private DnevnoStanjeDTO convertToDnevnoStanjeDTO(DnevnoStanje source) {
-        if(source == null) throw new EntityNotFoundException();
+        if(source == null || source.getObracunskiRacun() == null) throw new EntityNotFoundException();
 
         DnevnoStanjeDTO dnevnoStanjeDTO = new DnevnoStanjeDTO(source.getId(), source.getDatum(), source.getPrethodnoStanje(),
                 source.getPrometNaTeret(), source.getPrometUKorist(), source.getNovoStanje(),
