@@ -6,7 +6,9 @@ import java.util.Set;
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.MestoDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.Mesto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MestoConverter implements DtoConverter<Mesto, MestoDTO> {
 
 	@Override

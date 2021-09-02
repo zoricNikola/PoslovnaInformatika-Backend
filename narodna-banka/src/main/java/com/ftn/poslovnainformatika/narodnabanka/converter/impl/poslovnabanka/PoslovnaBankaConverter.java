@@ -72,6 +72,7 @@ public class PoslovnaBankaConverter implements DtoConverter<PoslovnaBanka, Poslo
 		if(source == null || source.getObracunskiRacun() == null) throw new NullPointerException();
 
 		PoslovnaBanka poslovnaBanka = new PoslovnaBanka();
+		poslovnaBanka.setSifraBanke(source.getSifraBanke());
 		poslovnaBanka.setNazivBanke(source.getNazivBanke());
 		poslovnaBanka.setSwiftKod(source.getSwiftKod());
 		poslovnaBanka.setPorukeBankeDuznika(new HashSet<>());
