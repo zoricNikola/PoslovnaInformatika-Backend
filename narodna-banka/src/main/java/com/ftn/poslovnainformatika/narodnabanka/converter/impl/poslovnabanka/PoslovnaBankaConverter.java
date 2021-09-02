@@ -10,7 +10,6 @@ import com.ftn.poslovnainformatika.narodnabanka.dto.obracunskiracun.ObracunskiRa
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.ObracunskiRacun;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.PorukaObavestenja;
-import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Racun;
 import com.ftn.poslovnainformatika.narodnabanka.repository.ObracunskiRacunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +18,7 @@ import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.poslovnabanka.PoslovnaBankaDataDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.poslovnabanka.PoslovnaBankaViewDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.PoslovnaBanka;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.TekuciRacun;
 
 import javax.persistence.EntityNotFoundException;
 

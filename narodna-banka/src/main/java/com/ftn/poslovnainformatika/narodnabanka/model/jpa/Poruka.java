@@ -44,7 +44,7 @@ public class Poruka {
 	@Enumerated(EnumType.STRING)
 	private VrstaPoruke vrstaPoruke;
 	
-	@Column(name = "ukupan_iznos", nullable = false)
+	@Column(name = "ukupan_iznos", nullable = false, precision = 15, scale = 2)
 	private double ukupanIznos;
 	
 	@Column(name = "sifra_valute", nullable = false, length = 3)
@@ -54,18 +54,18 @@ public class Poruka {
 	private LocalDate datumValute;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn(name = "banka_duznika_id", referencedColumnName = "poslovna_banka_id", nullable = false)
+	@JoinColumn(name = "banka_duznika", referencedColumnName = "sifra_banke", nullable = false)
 	private PoslovnaBanka bankaDuznika;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn(name = "banka_poverioca_id", referencedColumnName = "poslovna_banka_id", nullable = false)
+	@JoinColumn(name = "banka_poverioca", referencedColumnName = "sifra_banke", nullable = false)
 	private PoslovnaBanka bankaPoverioca;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "dnevno_stanje_id", referencedColumnName = "dnevno_stanje_id", nullable = false)
 	private DnevnoStanje dnevnoStanje;
 	
-	@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "poruka")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poruka")
 	private Set<Nalog> nalozi;
 	
 }

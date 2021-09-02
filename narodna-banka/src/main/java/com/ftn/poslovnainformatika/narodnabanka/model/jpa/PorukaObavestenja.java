@@ -21,19 +21,20 @@ public class PorukaObavestenja {
     @Column(name = "poruka_obavestenja_id", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "vrsta_poruke")
-    private VrstaPoruke vrstaPoruke;
+    @Column(name = "vrsta_obavestenja")
+    @Enumerated(EnumType.STRING)
+    private VrstaObavestenja vrstaObavestenja;
 
-    @Column(name = "swift_kod")
+    @Column(name = "swift_kod", length = 8)
     private String swiftKod;
 
-    @Column(name = "obracunski_racun")
+    @Column(name = "obracunski_racun", length = 18)
     private String obracunskiRacun;
 
     @Column(name = "datum_valute")
     private LocalDate datumValute;
 
-    @Column(name = "sifra_valute")
+    @Column(name = "sifra_valute", length = 3)
     private String sifraValute;
 
     @Column(name = "iznos", precision = 15, scale = 2, nullable = false)

@@ -46,7 +46,7 @@ public class Nalog {
 	@Column(name = "svrha_placanja", nullable = false)
 	private String svrhaPlacanja;
 	
-	@Column(name = "iznos", nullable = false)
+	@Column(name = "iznos", nullable = false, precision = 15, scale = 2)
 	private double iznos;
 	
 	@Column(name = "sifra_valute", nullable = false, length = 3)
@@ -64,10 +64,10 @@ public class Nalog {
 	@Column(name = "poziv_na_broj_odobrenja", length = 20)
 	private String pozivNaBrojOdobrenja;
 	
-	@Column(name = "model_zaduzenja")
+	@Column(name = "model_zaduzenja", precision = 2)
 	private Integer modelZaduzenja;
 	
-	@Column(name = "model_odobrenja")
+	@Column(name = "model_odobrenja", precision = 2)
 	private Integer modelOdobrenja;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

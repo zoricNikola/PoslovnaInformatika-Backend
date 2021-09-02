@@ -3,7 +3,7 @@ package com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.ObracunskiRacun;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.PorukaObavestenja;
-import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Racun;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +21,7 @@ import java.util.Set;
 public class PoslovnaBanka {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sifra_banke", unique = true, nullable = false)
+    @Column(name = "sifra_banke", unique = true, nullable = false, precision = 3)
     private Integer sifraBanke;
 
     @Column(name = "naziv", nullable = false, length = 30)
@@ -42,7 +41,7 @@ public class PoslovnaBanka {
     private Set<Poruka> porukeBankePoverioca;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poslovnaBanka")
-    private Set<Racun> racuni;
+    private Set<TekuciRacun> racuni;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poslovnaBanka")
     private Set<PorukaObavestenja> porukeObavestenja;

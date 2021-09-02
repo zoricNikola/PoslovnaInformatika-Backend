@@ -18,7 +18,7 @@ import java.util.Set;
 public class ObracunskiRacun {
 
     @Id
-    @Column(name = "broj_obracunskog_racuna", unique = true, nullable = false)
+    @Column(name = "broj_obracunskog_racuna", unique = true, nullable = false, length = 18)
     private String brojObracunskogRacuna;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "obracunskiRacun")

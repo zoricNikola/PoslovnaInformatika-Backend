@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PorukaObavestenjaRepository extends JpaRepository<PorukaObavestenja, Integer> {
     Page<PorukaObavestenja> findByPoruka_Id(int porukaId, Pageable pageable);
-    Page<PorukaObavestenja> findByPoslovnaBanka_Id(int poslovnaBankaId, Pageable pageable);
+    Page<PorukaObavestenja> findByPoslovnaBanka_SifraBanke(int sifraPoslovneBanke, Pageable pageable);
 }

@@ -1,7 +1,5 @@
 package com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka;
 
-import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Racun;
-import com.ftn.poslovnainformatika.narodnabanka.model.jpa.SifarnikDelatnosti;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,19 +33,19 @@ public class Klijent {
     @Column(name = "adresa", nullable = false, length = 40)
     private String adresa;
 
-    @Column(name = "pib", nullable = false)
-    private int pib;
+    @Column(name = "pib")
+    private Integer pib;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "sifra_delatnosti", referencedColumnName = "sifarnik_delatnosti_id", nullable = false)
-    private SifarnikDelatnosti sifarnikDelatnosti;
+    @JoinColumn(name = "delatnost", referencedColumnName = "delatnost_id")
+    private Delatnost delatnost;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "mesto", referencedColumnName = "mesto_id", nullable = false)
     private Mesto mesto;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "klijent")
-    private Set<Racun> racuni;
+    private Set<TekuciRacun> racuni;
 
 
 }
