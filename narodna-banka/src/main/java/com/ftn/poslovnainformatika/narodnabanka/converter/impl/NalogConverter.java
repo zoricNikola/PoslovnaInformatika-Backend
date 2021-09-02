@@ -19,7 +19,7 @@ public class NalogConverter implements DtoConverter<Nalog, NalogDTO> {
 				source.getRacunDuznika(), source.getRacunPoverioca(), source.getSvrhaPlacanja(), 
 				source.getIznos(), source.getSifraValute(), source.getDatum(), source.isHitno(), 
 				source.getPozivNaBrojZaduzenja(), source.getPozivNaBrojOdobrenja(), 
-				source.getModelZaduzenja(), source.getModelOdobrenja(), null);
+				source.getModelZaduzenja(), source.getModelOdobrenja());
 		
 		return dto;
 	}

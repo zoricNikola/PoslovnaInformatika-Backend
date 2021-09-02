@@ -41,6 +41,4 @@ public class NalogDTO {
 	
 	private Integer modelOdobrenja;
 	
-	private PorukaDTO poruka;
-	
 }
