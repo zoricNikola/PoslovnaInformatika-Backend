@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ public class DnevnoStanje {
     private Integer id;
 
     @Column(name = "datum", nullable = false)
-    private LocalDateTime datum;
+    private LocalDate datum;
 
     @Column(name = "prethodno_stanje", precision = 15, scale = 2, nullable = false)
     private double prethodnoStanje;
