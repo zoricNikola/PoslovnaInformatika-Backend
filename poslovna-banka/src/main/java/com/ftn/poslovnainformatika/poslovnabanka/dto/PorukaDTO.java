@@ -9,7 +9,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class PorukaDTO {
 
     private Integer id;
@@ -29,4 +28,18 @@ public class PorukaDTO {
     private PoslovnaBankaDTO bankaPoverioca;
 
     private Set<NalogDTO> nalozi;
+
+    @Override
+    public String toString() {
+        return "Poruka {" +
+                ", datum = " + datum +
+                ", vrstaPoruke = " + vrstaPoruke +
+                ", ukupanIznos = " + ukupanIznos +
+                ", sifraValute = '" + sifraValute + '\'' +
+                ", datumValute = " + datumValute +
+                ", bankaDuznika = " + bankaDuznika +
+                ", bankaPoverioca = " + bankaPoverioca +
+                ", nalozi = " + nalozi +
+                '}';
+    }
 }

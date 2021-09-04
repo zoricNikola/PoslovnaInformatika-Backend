@@ -1,9 +1,6 @@
 package com.ftn.poslovnainformatika.poslovnabanka.service.impl;
 
-import com.ftn.poslovnainformatika.poslovnabanka.dto.NalogDTO;
-import com.ftn.poslovnainformatika.poslovnabanka.dto.PorukaDTO;
-import com.ftn.poslovnainformatika.poslovnabanka.dto.PoslovnaBankaDTO;
-import com.ftn.poslovnainformatika.poslovnabanka.dto.VrstaPoruke;
+import com.ftn.poslovnainformatika.poslovnabanka.dto.*;
 import com.ftn.poslovnainformatika.poslovnabanka.util.FileUtil;
 
 import org.slf4j.Logger;
@@ -20,7 +17,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovnabanka.service.PoslovnaBankaService {
@@ -78,6 +74,28 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
         mono.subscribe(System.out::println);
 
         return mono;
+    }
+
+    @Override
+    public void receivePorukaDTO(PorukaDTO dto) {
+        if(dto.getVrstaPoruke() == VrstaPoruke.MT102) {
+            log.info("=== PRIMLJEN CLEARING NALOG OD SERVISA NARODNE BANKE ===");
+        }else if(dto.getVrstaPoruke() == VrstaPoruke.MT103) {
+            log.info("=== PRIMLJEN RTGS NALOG OD SERVISA NARODNE BANKE ===");
+        }
+        dto.toString();
+        log.info("=============================================================");
+    }
+
+    @Override
+    public void receiveObavestenjeDTO(ObavestenjeDTO dto) {
+        if(dto.getVrstaObavestenja() == VrstaObavestenja.MT900) {
+            log.info("==== PRIMLJENA PORUKA O ZADUZENJU ===");
+        }else if(dto.getVrstaObavestenja() == VrstaObavestenja.MT910) {
+            log.info("==== PRIMLJENA PORUKA O ODOBRENJU ===");
+        }
+        dto.toString();
+        log.info("==============================================================");
     }
 
     private static ExchangeFilterFunction logResponse() {

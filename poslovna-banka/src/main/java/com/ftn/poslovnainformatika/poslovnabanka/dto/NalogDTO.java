@@ -40,4 +40,24 @@ public class NalogDTO {
     private Integer modelZaduzenja;
 
     private Integer modelOdobrenja;
+
+    @Override
+    public String toString() {
+        return "Nalog {" +
+                "id=" + id +
+                ", duznik = '" + duznik + '\'' +
+                ", poverilac = '" + poverilac + '\'' +
+                ", racunDuznika = '" + racunDuznika + '\'' +
+                ", racunPoverioca = '" + racunPoverioca + '\'' +
+                ", svrhaPlacanja = '" + svrhaPlacanja + '\'' +
+                ", iznos = " + iznos +
+                ", sifraValute = '" + sifraValute + '\'' +
+                ", datum = " + datum +
+                ", hitno = " + hitno +
+                ", pozivNaBrojZaduzenja = '" + pozivNaBrojZaduzenja + '\'' +
+                ", pozivNaBrojOdobrenja = '" + pozivNaBrojOdobrenja + '\'' +
+                ", modelZaduzenja = " + modelZaduzenja +
+                ", modelOdobrenja = " + modelOdobrenja +
+                '}';
+    }
 }
