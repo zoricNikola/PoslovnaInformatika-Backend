@@ -17,8 +17,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovnabanka.service.PoslovnaBankaService {
@@ -44,29 +46,10 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
 
     @Override
     public Mono<Void> sendRTGS() {
-        NalogDTO nalogDTO = fileUtil.getNalogRTGS(FILE_PATH + "/rtgs.txt");
-        Set<NalogDTO> nalozi = new HashSet<>();
-        nalozi.add(nalogDTO);
+        Set<NalogDTO> nalozi = fileUtil.getNalozi(FILE_PATH + "/rtgs.txt");
 
-        PorukaDTO porukaDTO = new PorukaDTO();
+        PorukaDTO porukaDTO = createPorukaDTO(nalozi);
         porukaDTO.setVrstaPoruke(VrstaPoruke.MT103);
-        porukaDTO.setDatum(LocalDate.now());
-        porukaDTO.setSifraValute(nalogDTO.getSifraValute());
-        porukaDTO.setUkupanIznos(nalogDTO.getIznos());
-        porukaDTO.setDatumValute(LocalDate.now());
-        Integer sifraBankeDuznika = Integer.parseInt(nalogDTO.getRacunDuznika().substring(0,3));
-        Integer sifraBankePoverioca = Integer.parseInt(nalogDTO.getRacunPoverioca().substring(0,3));
-
-        PoslovnaBankaDTO bankaDuznik = new PoslovnaBankaDTO();
-        bankaDuznik.setSifraBanke(sifraBankeDuznika);
-
-        PoslovnaBankaDTO bankaPoverioca = new PoslovnaBankaDTO();
-        bankaPoverioca.setSifraBanke(sifraBankePoverioca);
-
-        porukaDTO.setBankaDuznika(bankaDuznik);
-        porukaDTO.setBankaPoverioca(bankaPoverioca);
-
-        porukaDTO.setNalozi(nalozi);
 
         Mono<Void> mono = webClient.post()
                 .uri("/poruke")
@@ -81,7 +64,20 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
 
     @Override
     public Mono<Void> sendClearing() {
-        return null;
+        Set<NalogDTO> nalozi = fileUtil.getNalozi(FILE_PATH + "/clearing.txt");
+
+        PorukaDTO porukaDTO = createPorukaDTO(nalozi);
+        porukaDTO.setVrstaPoruke(VrstaPoruke.MT102);
+
+        Mono<Void> mono = webClient.post()
+                .uri("/poruke")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(Mono.just(porukaDTO), PorukaDTO.class)
+                .exchangeToMono(response -> response.bodyToMono(Void.class));
+
+        mono.subscribe(System.out::println);
+
+        return mono;
     }
 
     private static ExchangeFilterFunction logResponse() {
@@ -98,6 +94,36 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
             clientRequest.headers().forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
             return Mono.just(clientRequest);
         });
+    }
+
+    private PorukaDTO createPorukaDTO(Set<NalogDTO> nalozi){
+        NalogDTO nalogDTO = null;
+        Optional<NalogDTO> nalog = nalozi.stream().findAny();
+        if(nalog.isPresent()) { nalogDTO = nalog.get();}
+
+        ArrayList<Double> listaIznosa = new ArrayList<>();
+        nalozi.forEach(item -> listaIznosa.add(item.getIznos()));
+        double ukupanIznosNaloga = listaIznosa.stream().mapToDouble(Double::doubleValue).sum();
+
+        PorukaDTO porukaDTO = new PorukaDTO();
+        porukaDTO.setDatum(LocalDate.now());
+        porukaDTO.setSifraValute(nalogDTO.getSifraValute());
+        porukaDTO.setUkupanIznos(ukupanIznosNaloga);
+        porukaDTO.setDatumValute(LocalDate.now());
+        porukaDTO.setNalozi(nalozi);
+        Integer sifraBankeDuznika = Integer.parseInt(nalogDTO.getRacunDuznika().substring(0,3));
+        Integer sifraBankePoverioca = Integer.parseInt(nalogDTO.getRacunPoverioca().substring(0,3));
+
+        PoslovnaBankaDTO bankaDuznik = new PoslovnaBankaDTO();
+        bankaDuznik.setSifraBanke(sifraBankeDuznika);
+
+        PoslovnaBankaDTO bankaPoverioca = new PoslovnaBankaDTO();
+        bankaPoverioca.setSifraBanke(sifraBankePoverioca);
+
+        porukaDTO.setBankaDuznika(bankaDuznik);
+        porukaDTO.setBankaPoverioca(bankaPoverioca);
+
+        return porukaDTO;
     }
 
 }

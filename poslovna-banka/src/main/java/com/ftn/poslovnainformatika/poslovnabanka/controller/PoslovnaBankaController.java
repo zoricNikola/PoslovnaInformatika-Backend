@@ -16,8 +16,14 @@ public class PoslovnaBankaController {
     private PoslovnaBankaService poslovnaBankaService;
 
     @GetMapping(value = "/sendRTGS")
-    public ResponseEntity<Void> sendRTGS(){
+    public ResponseEntity<Void> sendRTGS() {
         poslovnaBankaService.sendRTGS();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/sendCLEARING")
+    public ResponseEntity<Void> sendCLEARING() {
+        poslovnaBankaService.sendClearing();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -8,14 +8,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class FileUtil {
 
-    //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
-
-    public NalogDTO getNalogRTGS(String path) {
+    public Set<NalogDTO> getNalozi(String path) {
+        Set<NalogDTO> nalozi = new HashSet<>();
         try{
             File file = new File(path);
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -40,13 +40,14 @@ public class FileUtil {
 
                 nalogDTO = new NalogDTO(null, duznik, poverilac, racunDuznika, racunPoverioca, svrhaPLacanja,
                         iznos, sifraValute, datum, hitno, pozivNaBrojZaduzenja, pozivNaBrojOdobrenja, modelZaduzenja, modelOdobrenja);
+
+                nalozi.add(nalogDTO);
             }
             reader.close();
-            return nalogDTO;
 
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        return null;
+        return nalozi;
     }
 }
