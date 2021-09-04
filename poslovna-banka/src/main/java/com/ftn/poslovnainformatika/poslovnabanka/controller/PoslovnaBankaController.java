@@ -1,6 +1,6 @@
 package com.ftn.poslovnainformatika.poslovnabanka.controller;
 
-import com.ftn.poslovnainformatika.poslovnabanka.service.PoslovnaBankaService;
+import com.ftn.poslovnainformatika.poslovnabanka.service.impl.PoslovnaBankaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

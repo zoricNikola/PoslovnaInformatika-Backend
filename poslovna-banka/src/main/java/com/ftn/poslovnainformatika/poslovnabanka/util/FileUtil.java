@@ -8,11 +8,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class FileUtil {
+
+    //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
 
     public NalogDTO getNalogRTGS(String path) {
         try{
