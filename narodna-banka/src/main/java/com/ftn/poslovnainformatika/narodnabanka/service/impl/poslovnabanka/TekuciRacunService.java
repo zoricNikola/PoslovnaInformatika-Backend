@@ -22,6 +22,9 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
 //    private KlijentService klijentService;
 
     @Autowired
+    private DtoConverter<Klijent, KlijentDTO> klijentConverter;
+
+    @Autowired
     KlijentRepository klijentRepository;
 
     @Override
@@ -52,7 +55,6 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
             tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
         }
 
-
         return Integer.valueOf(tekuciRacun.getBrojRacuna());
     }
 
@@ -60,6 +62,23 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
     public void update(int id, TekuciRacunDTO tekuciRacunDTO) {
         TekuciRacun tekuciRacun = tekuciRacunRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
+        if (!klijentRepository.findById(tekuciRacunDTO.getKlijent().getId()).isPresent()){
+            KlijentDTO klijentDTO = new KlijentDTO(null, tekuciRacunDTO.getKlijent().getIme(), tekuciRacunDTO.getKlijent().getPrezime(),
+                    tekuciRacunDTO.getKlijent().getNaziv(), tekuciRacunDTO.getKlijent().getAdresa(),
+                    tekuciRacunDTO.getKlijent().getPib(), tekuciRacunDTO.getKlijent().getMesto(),
+                    tekuciRacunDTO.getKlijent().getDelatnost());
+
+            // klijentDTO = klijentService.save(klijentDTO);
+
+            tekuciRacunDTO.setKlijent(klijentDTO);
+
+            tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
+            tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
+        }else {
+            tekuciRacun.setKlijent(klijentConverter.convertToJPA(tekuciRacunDTO.getKlijent()));
+            tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
+            tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
+        }
     }
 
     @Override
