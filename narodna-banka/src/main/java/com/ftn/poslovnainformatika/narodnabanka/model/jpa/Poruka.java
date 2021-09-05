@@ -62,8 +62,16 @@ public class Poruka {
 	private PoslovnaBanka bankaPoverioca;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn(name = "dnevno_stanje_id", referencedColumnName = "dnevno_stanje_id", nullable = false)
-	private DnevnoStanje dnevnoStanje;
+	@JoinColumn(name = "dnevno_stanje_banke_duznika", referencedColumnName = "dnevno_stanje_id", nullable = false)
+	private DnevnoStanje dnevnoStanjeBankeDuznika;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "dnevno_stanje_banke_poverioca", referencedColumnName = "dnevno_stanje_id", nullable = false)
+	private DnevnoStanje dnevnoStanjeBankePoverioca;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "kliring", referencedColumnName = "kliring_id")
+	private Kliring kliring;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poruka")
 	private Set<Nalog> nalozi;

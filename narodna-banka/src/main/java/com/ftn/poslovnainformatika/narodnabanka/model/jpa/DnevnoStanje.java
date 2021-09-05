@@ -38,8 +38,11 @@ public class DnevnoStanje {
     @Column(name = "novo_stanje", precision = 15, scale = 2, nullable = false)
     private double novoStanje;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "dnevnoStanje")
-    private Set<Poruka> poruke;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "dnevnoStanjeBankeDuznika")
+    private Set<Poruka> porukeKaoBankaDuznika;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "dnevnoStanjeBankePoverioca")
+    private Set<Poruka> porukeKaoBankaPoverioca;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "obracunski_racun", referencedColumnName = "broj_obracunskog_racuna", nullable = false)

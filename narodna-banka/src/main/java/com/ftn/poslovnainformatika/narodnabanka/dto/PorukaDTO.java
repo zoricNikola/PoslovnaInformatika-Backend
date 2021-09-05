@@ -6,7 +6,11 @@ import java.util.Set;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -31,7 +35,11 @@ public class PorukaDTO {
 	
 	private PoslovnaBankaDTO bankaPoverioca;
 	
-	private DnevnoStanjeDTO dnevnoStanje;
+	private DnevnoStanjeDTO dnevnoStanjeBankeDuznika;
+	
+	private DnevnoStanjeDTO dnevnoStanjeBankePoverioca;
+	
+	private KliringDTO kliring;
 
 	private Set<NalogDTO> nalozi;
 

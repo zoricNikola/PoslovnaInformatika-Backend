@@ -70,7 +70,7 @@ public class DnevnoStanjeConverter implements DtoConverter<DnevnoStanje, DnevnoS
         if(obracunskiRacun.isEmpty()) throw new EntityNotFoundException();
 
         DnevnoStanje dnevnoStanje = new DnevnoStanje(source.getId(), source.getDatum(), source.getPrethodnoStanje(),
-                source.getPrometNaTeret(), source.getPrometUKorist(), source.getNovoStanje(), new HashSet<>(), obracunskiRacun.get());
+                source.getPrometNaTeret(), source.getPrometUKorist(), source.getNovoStanje(), new HashSet<>(), new HashSet<>(), obracunskiRacun.get());
 
         return dnevnoStanje;
     }

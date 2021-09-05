@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
 import com.ftn.poslovnainformatika.narodnabanka.dto.DnevnoStanjeDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.KliringDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.NalogDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.DnevnoStanje;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Kliring;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Nalog;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.PoslovnaBanka;
@@ -30,6 +32,9 @@ public class PorukaConverter implements DtoConverter<Poruka, PorukaDTO> {
 	private DtoConverter<DnevnoStanje, DnevnoStanjeDTO> dnevnoStanjeConverter;
 	
 	@Autowired
+	private DtoConverter<Kliring, KliringDTO> kliringConverter;
+	
+	@Autowired
 	private PoslovnaBankaRepository poslovnaBankaRepo;
 	
 	@Override
@@ -39,7 +44,9 @@ public class PorukaConverter implements DtoConverter<Poruka, PorukaDTO> {
 				source.getUkupanIznos(), source.getSifraValute(), source.getDatumValute(), 
 				poslovnaBankaConverter.convertToDTO(source.getBankaDuznika()), 
 				poslovnaBankaConverter.convertToDTO(source.getBankaPoverioca()), 
-				dnevnoStanjeConverter.convertToDTO(source.getDnevnoStanje()), 
+				dnevnoStanjeConverter.convertToDTO(source.getDnevnoStanjeBankeDuznika()), 
+				dnevnoStanjeConverter.convertToDTO(source.getDnevnoStanjeBankePoverioca()), 
+				kliringConverter.convertToDTO(source.getKliring()), 
 				nalogConverter.convertToDTO(source.getNalozi()));
 		
 		return dto;
@@ -59,7 +66,7 @@ public class PorukaConverter implements DtoConverter<Poruka, PorukaDTO> {
 		Poruka jpa = new Poruka(null, source.getDatum(), source.getVrstaPoruke(), source.getUkupanIznos(), 
 				source.getSifraValute(), source.getDatumValute(), 
 				poslovnaBankaRepo.getById(source.getBankaDuznika().getSifraBanke()), 
-				poslovnaBankaRepo.getById(source.getBankaPoverioca().getSifraBanke()), null, null);
+				poslovnaBankaRepo.getById(source.getBankaPoverioca().getSifraBanke()), null, null, null, null);
 		
 		Set<Nalog> nalozi = new HashSet<>();
 		for (NalogDTO dto : source.getNalozi()) {
