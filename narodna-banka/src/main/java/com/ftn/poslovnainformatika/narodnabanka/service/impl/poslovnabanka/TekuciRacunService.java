@@ -38,7 +38,7 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
     public int create(TekuciRacunDTO tekuciRacunDTO) {
         TekuciRacun tekuciRacun;
 
-        if (!klijentRepository.findById(tekuciRacunDTO.getKlijent().getId()).isPresent()){
+        if (tekuciRacunDTO.getKlijent().getId() == null) {
             KlijentDTO klijentDTO = new KlijentDTO(null, tekuciRacunDTO.getKlijent().getIme(), tekuciRacunDTO.getKlijent().getPrezime(),
                     tekuciRacunDTO.getKlijent().getNaziv(), tekuciRacunDTO.getKlijent().getAdresa(),
                     tekuciRacunDTO.getKlijent().getPib(), tekuciRacunDTO.getKlijent().getMesto(),

@@ -26,7 +26,7 @@ public class TekuciRacun {
     @Column(name = "broj_racuna", unique = true, nullable = false, length = 18)
     private String brojRacuna;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "klijent", referencedColumnName = "klijent_id", nullable = false)
     private Klijent klijent;
 

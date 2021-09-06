@@ -75,12 +75,12 @@ public class KlijentConverter implements DtoConverter<Klijent, KlijentDTO> {
     }
 
     private Klijent convertToKlijentJPA(KlijentDTO source) {
-        if(source == null || source.getDelatnost() == null || source.getMesto() == null) throw new NullPointerException();
+        if(source == null || source.getMesto() == null) throw new NullPointerException();
 
         Optional<Mesto> mesto = mestoRepo.findById(source.getMesto().getId());
         Optional<Delatnost> delatnost = delatnostRepo.findById(source.getDelatnost().getId());
         
-        if(mesto.isEmpty() || delatnost.isEmpty()) throw new EntityNotFoundException();
+        if(mesto.isEmpty()) throw new EntityNotFoundException();
 
         Klijent klijent = new Klijent(source.getId(), source.getIme(), source.getPrezime(), source.getNaziv(),
                 source.getAdresa(), source.getPib(), delatnost.get(), mesto.get(), new HashSet<>());

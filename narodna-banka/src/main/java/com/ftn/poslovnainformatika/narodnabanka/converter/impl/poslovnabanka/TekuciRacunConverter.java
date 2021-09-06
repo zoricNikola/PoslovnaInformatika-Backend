@@ -47,7 +47,14 @@ public class TekuciRacunConverter implements DtoConverter<TekuciRacun, TekuciRac
 
     @Override
     public TekuciRacun convertToJPA(TekuciRacunDTO source) {
-        TekuciRacun jpa = new TekuciRacun(null, klijentRepository.getById(source.getKlijent().getId()),
+    	Klijent klijent;
+    	
+    	if (source.getKlijent().getId() == null) 
+    		klijent = klijentConverter.convertToJPA(source.getKlijent());
+    	else
+    		klijent = klijentRepository.getById(source.getKlijent().getId());
+    	
+        TekuciRacun jpa = new TekuciRacun(null, klijent,
                                             poslovnaBankaRepository.getById(source.getPoslovnaBanka().getSifraBanke()));
 
         return jpa;
