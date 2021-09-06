@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class PoslovnaBankaService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.PoslovnaBankaService {
@@ -56,5 +59,12 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.narodna
         PoslovnaBanka poslovnaBanka = poslovnaBankaRepo.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
         poslovnaBankaRepo.deleteById(id);
+    }
+
+    @Override
+    public Set<PoslovnaBankaDTO> getAll() {
+        List<PoslovnaBanka> poslovneBanke = poslovnaBankaRepo.findAll();
+
+        return poslovnaBankaConverter.convertToDTO(new HashSet<>(poslovneBanke));
     }
 }
