@@ -1,5 +1,6 @@
 package com.ftn.poslovnainformatika.narodnabanka.controller;
 
+import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.IzvodObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.StanjeObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.service.ObracunskiRacunService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.websocket.server.PathParam;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/api/obracunski-racuni")
@@ -21,14 +23,32 @@ public class ObracunskiRacunController {
     private ObracunskiRacunService obracunskiRacunService;
 
     @GetMapping(value = "/stanje")
-    public ResponseEntity<List<StanjeObracunskogRacunaDTO>> getStanjaObracunskihRacuna(@RequestParam(name = "datum") String datumString) {
+    public ResponseEntity<Set<StanjeObracunskogRacunaDTO>> getStanjaObracunskihRacuna(@RequestParam(name = "datum") String datumString) {
         LocalDate datum = null;
         try {
             datum = LocalDate.parse(datumString);
         } catch (Exception e) {}
 
-        List<StanjeObracunskogRacunaDTO> stanja = obracunskiRacunService.getStanjaObracunskihRacuna(datum);
+        Set<StanjeObracunskogRacunaDTO> stanja = obracunskiRacunService.getStanjaObracunskihRacuna(datum);
 
         return new ResponseEntity<>(stanja, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/izvod")
+    public ResponseEntity<Set<IzvodObracunskogRacunaDTO>> getIzvodObracunskogRacuna(@PathParam("id") int bankaId,
+                                                                                     @RequestParam("startDatum") String startDatumStr,
+                                                                                     @RequestParam("endDatum") String endDatumStr) {
+        LocalDate startDatum = null;
+        LocalDate endDatum = null;
+        try {
+            startDatum = LocalDate.parse(startDatumStr);
+        } catch (Exception e) {}
+        try {
+            endDatum = LocalDate.parse(endDatumStr);
+        } catch (Exception e) {}
+
+        Set<IzvodObracunskogRacunaDTO> izvodi = obracunskiRacunService.getIzvodObracunskogRacuna(bankaId, startDatum, endDatum);
+
+        return new ResponseEntity<>(izvodi, HttpStatus.OK);
     }
 }

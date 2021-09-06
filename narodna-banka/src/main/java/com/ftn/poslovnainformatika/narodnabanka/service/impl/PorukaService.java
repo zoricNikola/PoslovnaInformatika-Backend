@@ -1,6 +1,9 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.impl;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,4 +103,90 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@Override
+	public Set<PorukaDTO> getByPoslovnaBankaAndDatumRange(int bankaId, LocalDate startDatum, LocalDate endDatum) {
+		List<Poruka> poruke = porukaRepo.filterPoruke(bankaId, startDatum, endDatum);
+
+		return porukaConverter.convertToDTO(new HashSet<>(poruke));
+	}
 }
