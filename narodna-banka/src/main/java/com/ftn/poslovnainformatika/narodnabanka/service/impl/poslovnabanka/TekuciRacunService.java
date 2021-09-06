@@ -45,9 +45,6 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
                     tekuciRacunDTO.getKlijent().getDelatnost());
 
 
-            int noviKlijentId = klijentService.create(klijentDTO);
-            klijentDTO.setId(noviKlijentId);
-
             tekuciRacunDTO.setKlijent(klijentDTO);
 
             tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
@@ -62,26 +59,23 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
 
     @Override
     public void update(int id, TekuciRacunDTO tekuciRacunDTO) {
-        TekuciRacun tekuciRacun = tekuciRacunRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-
-        if (!klijentRepository.findById(tekuciRacunDTO.getKlijent().getId()).isPresent()){
-            KlijentDTO klijentDTO = new KlijentDTO(null, tekuciRacunDTO.getKlijent().getIme(), tekuciRacunDTO.getKlijent().getPrezime(),
-                    tekuciRacunDTO.getKlijent().getNaziv(), tekuciRacunDTO.getKlijent().getAdresa(),
-                    tekuciRacunDTO.getKlijent().getPib(), tekuciRacunDTO.getKlijent().getMesto(),
-                    tekuciRacunDTO.getKlijent().getDelatnost());
-
-            int noviKlijentId = klijentService.create(klijentDTO);
-            klijentDTO.setId(noviKlijentId);
-
-            tekuciRacunDTO.setKlijent(klijentDTO);
-
-            tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
-            tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
-        }else {
-            tekuciRacun.setKlijent(klijentConverter.convertToJPA(tekuciRacunDTO.getKlijent()));
-            tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
-            tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
-        }
+//        TekuciRacun tekuciRacun = tekuciRacunRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+//
+//        if (!klijentRepository.findById(tekuciRacunDTO.getKlijent().getId()).isPresent()){
+//            KlijentDTO klijentDTO = new KlijentDTO(null, tekuciRacunDTO.getKlijent().getIme(), tekuciRacunDTO.getKlijent().getPrezime(),
+//                    tekuciRacunDTO.getKlijent().getNaziv(), tekuciRacunDTO.getKlijent().getAdresa(),
+//                    tekuciRacunDTO.getKlijent().getPib(), tekuciRacunDTO.getKlijent().getMesto(),
+//                    tekuciRacunDTO.getKlijent().getDelatnost());
+//
+//            tekuciRacunDTO.setKlijent(klijentDTO);
+//
+//            tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
+//            tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
+//        }else {
+//            tekuciRacun.setKlijent(klijentConverter.convertToJPA(tekuciRacunDTO.getKlijent()));
+//            tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
+//            tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
+//        }
     }
 
     @Override
