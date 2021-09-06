@@ -18,8 +18,8 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
     @Autowired
     private TekuciRacunRepository tekuciRacunRepository;
 
-//    @Autowired
-//    private KlijentService klijentService;
+    @Autowired
+    private KlijentService klijentService;
 
     @Autowired
     private DtoConverter<Klijent, KlijentDTO> klijentConverter;
@@ -44,7 +44,9 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
                     tekuciRacunDTO.getKlijent().getPib(), tekuciRacunDTO.getKlijent().getMesto(),
                     tekuciRacunDTO.getKlijent().getDelatnost());
 
-           // klijentDTO = klijentService.save(klijentDTO);
+
+            int noviKlijentId = klijentService.create(klijentDTO);
+            klijentDTO.setId(noviKlijentId);
 
             tekuciRacunDTO.setKlijent(klijentDTO);
 
@@ -68,7 +70,8 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
                     tekuciRacunDTO.getKlijent().getPib(), tekuciRacunDTO.getKlijent().getMesto(),
                     tekuciRacunDTO.getKlijent().getDelatnost());
 
-            // klijentDTO = klijentService.save(klijentDTO);
+            int noviKlijentId = klijentService.create(klijentDTO);
+            klijentDTO.setId(noviKlijentId);
 
             tekuciRacunDTO.setKlijent(klijentDTO);
 
