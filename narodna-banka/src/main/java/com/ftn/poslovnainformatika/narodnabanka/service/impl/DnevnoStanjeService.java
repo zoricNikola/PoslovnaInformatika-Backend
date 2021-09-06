@@ -1,6 +1,7 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.impl;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -100,6 +101,11 @@ public class DnevnoStanjeService implements com.ftn.poslovnainformatika.narodnab
 				findByObracunskiRacun_BrojObracunskogRacunaAndDatum(brojObracunskogRacuna, datum).orElseThrow();
 		
 		return stanje;
+	}
+	
+	@Override
+	public void saveAll(Collection<DnevnoStanje> stanja) {
+		dnevnoStanjeRepo.saveAll(stanja);
 	}
 
 }

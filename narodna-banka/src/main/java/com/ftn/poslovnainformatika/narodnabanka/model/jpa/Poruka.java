@@ -62,11 +62,11 @@ public class Poruka {
 	private PoslovnaBanka bankaPoverioca;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn(name = "dnevno_stanje_banke_duznika", referencedColumnName = "dnevno_stanje_id", nullable = false)
+	@JoinColumn(name = "dnevno_stanje_banke_duznika", referencedColumnName = "dnevno_stanje_id")
 	private DnevnoStanje dnevnoStanjeBankeDuznika;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn(name = "dnevno_stanje_banke_poverioca", referencedColumnName = "dnevno_stanje_id", nullable = false)
+	@JoinColumn(name = "dnevno_stanje_banke_poverioca", referencedColumnName = "dnevno_stanje_id")
 	private DnevnoStanje dnevnoStanjeBankePoverioca;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

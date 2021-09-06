@@ -1,16 +1,24 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
-import com.ftn.poslovnainformatika.narodnabanka.dto.DnevnoStanjeDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.DnevnoStanje;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Kliring;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
+import com.ftn.poslovnainformatika.narodnabanka.repository.KliringRepository;
 import com.ftn.poslovnainformatika.narodnabanka.repository.PorukaRepository;
 
 @Service
@@ -26,7 +34,7 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	private DnevnoStanjeService stanjeService;
 	
 	@Autowired
-	private DtoConverter<DnevnoStanje, DnevnoStanjeDTO> stanjeConverter;
+	private KliringRepository kliringRepo;
 	
 	@Override
 	public PorukaDTO getOne(int id) {
@@ -90,10 +98,83 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		
 		try {
 			porukaRepo.save(poruka);
-			stanjeService.update(stanjeBankeDuznika.getId(), stanjeConverter.convertToDTO(stanjeBankeDuznika));
-			stanjeService.update(stanjeBankePoverioca.getId(), stanjeConverter.convertToDTO(stanjeBankePoverioca));
+			
+			List<DnevnoStanje> stanja = new ArrayList<DnevnoStanje>();
+			stanja.add(stanjeBankePoverioca);
+			stanja.add(stanjeBankeDuznika);
+			stanjeService.saveAll(stanja);
 			
 //			Proslediti poruku i poslati obavestenja
+		} catch (Exception e) {
+//			rollback?
+		}
+		
+	}
+	
+//	@Scheduled(cron = "0 0 9-16 * * MON-FRI")
+	@Scheduled(cron = "0 */5 * * * *")
+	private void handleClearing() {
+		System.out.println("Started clearing...");
+		
+		List<Poruka> poruke = porukaRepo.findByVrstaPorukeAndKliring(VrstaPoruke.MT102, null);
+		
+		Map<Integer, DnevnoStanje> stanja = new HashMap<>();
+		
+		Map<Integer, Double> prometNaTeret = new HashMap<>();
+		Map<Integer, Double> prometUKorist = new HashMap<>();
+		
+		Kliring kliring = new Kliring(null, LocalDateTime.now(), new HashSet<Poruka>(poruke));
+		
+		LocalDate today = LocalDate.now();
+		
+		for (Poruka poruka : poruke) {
+			int bankaDuznika = poruka.getBankaDuznika().getSifraBanke();
+			
+			if (!stanja.containsKey(bankaDuznika))
+				stanja.put(bankaDuznika, stanjeService.getByBrojObracunskogRacunaAndDatum(poruka.getBankaDuznika()
+						.getObracunskiRacun().getBrojObracunskogRacuna(), today));
+			
+			prometNaTeret.put(bankaDuznika, prometNaTeret.get(bankaDuznika) != null ? 
+					prometNaTeret.get(bankaDuznika) : 0  + poruka.getUkupanIznos());
+			
+			
+			int bankaPoverioca = poruka.getBankaPoverioca().getSifraBanke();
+			
+			if (!stanja.containsKey(bankaPoverioca))
+				stanja.put(bankaPoverioca, stanjeService.getByBrojObracunskogRacunaAndDatum(poruka.getBankaPoverioca()
+						.getObracunskiRacun().getBrojObracunskogRacuna(), today));
+			
+			prometUKorist.put(bankaPoverioca, prometUKorist.get(bankaPoverioca) != null ?
+					prometUKorist.get(bankaPoverioca) : 0 + poruka.getUkupanIznos());
+			
+			poruka.setKliring(kliring);
+			poruka.setDnevnoStanjeBankeDuznika(stanja.get(bankaDuznika));
+			poruka.setDnevnoStanjeBankePoverioca(stanja.get(bankaPoverioca));
+		}
+		
+		for (Integer sifraBanke : stanja.keySet()) {
+			DnevnoStanje stanje = stanja.get(sifraBanke);
+			
+			Double naTeret = prometNaTeret.get(sifraBanke);
+			Double uKorist = prometUKorist.get(sifraBanke);
+			
+			if (naTeret != null)
+				stanje.setPrometNaTeret(stanje.getPrometNaTeret() + naTeret);
+			
+			if (uKorist != null)
+				stanje.setPrometUKorist(stanje.getPrometUKorist() + uKorist);
+			
+			stanje.setNovoStanje(stanje.getPrethodnoStanje() - stanje.getPrometNaTeret() + stanje.getPrometUKorist());
+		}
+		
+		try {
+			stanjeService.saveAll(stanja.values());
+			kliringRepo.save(kliring);
+			porukaRepo.saveAll(poruke);
+			
+//			Proslediti poruke i poslati obavestenja
+			
+			System.out.println("...clearing done");
 		} catch (Exception e) {
 //			rollback?
 		}

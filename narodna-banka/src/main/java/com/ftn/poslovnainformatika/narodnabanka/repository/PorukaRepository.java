@@ -12,7 +12,7 @@ import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
 
 public interface PorukaRepository extends JpaRepository<Poruka, Integer> {
 	
-	Page<Poruka> findByDnevnoStanje_Id(int dnevnoStanjeId, Pageable pageable);
+//	Page<Poruka> findByDnevnoStanje_Id(int dnevnoStanjeId, Pageable pageable);
 	
 	List<Poruka> findByVrstaPorukeAndKliring(VrstaPoruke vrstaPoruke, Kliring kliring);
 
