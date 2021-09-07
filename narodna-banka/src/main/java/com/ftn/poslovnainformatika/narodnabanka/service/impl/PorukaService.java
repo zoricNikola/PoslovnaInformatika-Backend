@@ -6,22 +6,33 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Resource;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
+import com.ftn.poslovnainformatika.narodnabanka.dto.NalogDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.DnevnoStanje;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Kliring;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Nalog;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
 import com.ftn.poslovnainformatika.narodnabanka.repository.KliringRepository;
 import com.ftn.poslovnainformatika.narodnabanka.repository.PorukaRepository;
+import com.ftn.poslovnainformatika.narodnabanka.service.ObavestenjeService;
+
+import reactor.core.publisher.Mono;
 
 @Service
 public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.service.PorukaService {
@@ -33,6 +44,9 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	private DtoConverter<Poruka, PorukaDTO> porukaConverter;
 	
 	@Autowired
+	private DtoConverter<Nalog, NalogDTO> nalogConverter;
+	
+	@Autowired
 	private DnevnoStanjeService stanjeService;
 	
 	@Autowired
@@ -40,6 +54,12 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 
 	@Autowired
 	private ObavestenjeService obavestenjeService;
+	
+    @Autowired
+    private WebClient webClient;
+    
+    @Resource(name = "poslovneBankeServices")
+    public Map<Integer, String> poslovneBankeServices;
 	
 	@Override
 	public PorukaDTO getOne(int id) {
@@ -102,7 +122,7 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		poruka.setDnevnoStanjeBankePoverioca(stanjeBankePoverioca);
 		
 		try {
-			porukaRepo.save(poruka);
+			poruka = porukaRepo.save(poruka);
 			
 			List<DnevnoStanje> stanja = new ArrayList<DnevnoStanje>();
 			stanja.add(stanjeBankePoverioca);
@@ -110,8 +130,8 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 			stanjeService.saveAll(stanja);
 			
 //			Proslediti poruku i poslati obavestenja
-			obavestenjeService.sendObavestenjeDuznika(poruka);
-			obavestenjeService.sendObavestenjePoverioca(poruka);
+			forwardPoruka(poruka);
+			obavestenjeService.sendObavestenja(poruka);
 		} catch (Exception e) {
 //			rollback?
 		}
@@ -119,7 +139,7 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	}
 	
 //	@Scheduled(cron = "0 0 9-16 * * MON-FRI")
-	@Scheduled(cron = "0 */5 * * * *")
+	@Scheduled(cron = "0 */2 * * * *")
 	private void handleClearing() {
 		System.out.println("Started clearing...");
 		
@@ -177,15 +197,16 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		try {
 			stanjeService.saveAll(stanja.values());
 			kliringRepo.save(kliring);
-			porukaRepo.saveAll(poruke);
+			poruke = porukaRepo.saveAll(poruke);
 			
 //			Proslediti poruke i poslati obavestenja
 			for(Poruka p : poruke) {
-				obavestenjeService.sendObavestenjePoverioca(p);
-				obavestenjeService.sendObavestenjeDuznika(p);
+				forwardPoruka(p);
+				obavestenjeService.sendObavestenja(p);
 			}
 			System.out.println("...clearing done");
 		} catch (Exception e) {
+			e.printStackTrace();
 //			rollback?
 		}
 		
@@ -196,5 +217,20 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		List<Poruka> poruke = porukaRepo.filterPoruke(bankaId, startDatum, endDatum);
 
 		return porukaConverter.convertToDTO(new HashSet<>(poruke));
+	}
+	
+	private void forwardPoruka(Poruka poruka) {
+		PorukaDTO dto = porukaConverter.convertToDTO(poruka);
+		dto.setDnevnoStanjeBankeDuznika(null);
+		dto.setDnevnoStanjeBankePoverioca(null);
+		dto.setNalozi(nalogConverter.convertToDTO(poruka.getNalozi()));
+		
+		webClient.post()
+			.uri(String.format("%s%s", poslovneBankeServices.get(poruka.getBankaPoverioca().getSifraBanke()), "/receive/message"))
+			.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+			.body(Mono.just(dto), PorukaDTO.class)
+			.exchangeToMono(response -> response.bodyToMono(Void.class))
+			.subscribe(System.out::println);
+
 	}
 }

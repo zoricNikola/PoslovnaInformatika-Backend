@@ -79,9 +79,9 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
     @Override
     public void receivePorukaDTO(PorukaDTO dto) {
         if(dto.getVrstaPoruke() == VrstaPoruke.MT102) {
-            log.info("=== PRIMLJEN CLEARING NALOG OD SERVISA NARODNE BANKE ===");
+            log.info("=== PRIMLJEN CLEARING NALOG OD SERVISA NARODNE BANKE ===\n" + dto.toString());
         }else if(dto.getVrstaPoruke() == VrstaPoruke.MT103) {
-            log.info("=== PRIMLJEN RTGS NALOG OD SERVISA NARODNE BANKE ===");
+            log.info("=== PRIMLJEN RTGS NALOG OD SERVISA NARODNE BANKE ===\n" + dto.toString());
         }
         dto.toString();
         log.info("=============================================================");
@@ -90,9 +90,9 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
     @Override
     public void receiveObavestenjeDTO(ObavestenjeDTO dto) {
         if(dto.getVrstaObavestenja() == VrstaObavestenja.MT900) {
-            log.info("==== PRIMLJENA PORUKA O ZADUZENJU ===");
+            log.info("==== PRIMLJENA PORUKA O ZADUZENJU ===\n" + dto.toString());
         }else if(dto.getVrstaObavestenja() == VrstaObavestenja.MT910) {
-            log.info("==== PRIMLJENA PORUKA O ODOBRENJU ===");
+            log.info("==== PRIMLJENA PORUKA O ODOBRENJU ===\n" + dto.toString());
         }
         dto.toString();
         log.info("==============================================================");

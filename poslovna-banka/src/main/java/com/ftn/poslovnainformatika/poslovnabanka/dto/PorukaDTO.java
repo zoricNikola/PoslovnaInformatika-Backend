@@ -32,6 +32,7 @@ public class PorukaDTO {
     @Override
     public String toString() {
         return "Poruka {" +
+        		"id = " + id +
                 ", datum = " + datum +
                 ", vrstaPoruke = " + vrstaPoruke +
                 ", ukupanIznos = " + ukupanIznos +

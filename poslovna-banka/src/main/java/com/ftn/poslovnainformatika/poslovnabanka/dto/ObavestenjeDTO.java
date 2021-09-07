@@ -34,7 +34,7 @@ public class ObavestenjeDTO {
     @Override
     public String toString() {
         return "Obavestenje {" +
-                ", vrstaObavestenja = " + vrstaObavestenja +
+                "vrstaObavestenja = " + vrstaObavestenja +
                 ", swiftKod = '" + swiftKod + '\'' +
                 ", obracunskiRacun = '" + obracunskiRacun + '\'' +
                 ", datumValute = " + datumValute +

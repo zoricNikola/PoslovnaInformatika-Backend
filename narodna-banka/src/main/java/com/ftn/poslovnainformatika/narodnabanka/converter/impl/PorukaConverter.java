@@ -47,7 +47,7 @@ public class PorukaConverter implements DtoConverter<Poruka, PorukaDTO> {
 				dnevnoStanjeConverter.convertToDTO(source.getDnevnoStanjeBankeDuznika()), 
 				dnevnoStanjeConverter.convertToDTO(source.getDnevnoStanjeBankePoverioca()), 
 				kliringConverter.convertToDTO(source.getKliring()), 
-				nalogConverter.convertToDTO(source.getNalozi()));
+				null);
 		
 		return dto;
 	}
