@@ -37,6 +37,9 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	
 	@Autowired
 	private KliringRepository kliringRepo;
+
+	@Autowired
+	private ObavestenjeService obavestenjeService;
 	
 	@Override
 	public PorukaDTO getOne(int id) {
@@ -107,6 +110,8 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 			stanjeService.saveAll(stanja);
 			
 //			Proslediti poruku i poslati obavestenja
+			obavestenjeService.sendObavestenjeDuznika(poruka);
+			obavestenjeService.sendObavestenjePoverioca(poruka);
 		} catch (Exception e) {
 //			rollback?
 		}
@@ -175,7 +180,10 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 			porukaRepo.saveAll(poruke);
 			
 //			Proslediti poruke i poslati obavestenja
-			
+			for(Poruka p : poruke) {
+				obavestenjeService.sendObavestenjePoverioca(p);
+				obavestenjeService.sendObavestenjeDuznika(p);
+			}
 			System.out.println("...clearing done");
 		} catch (Exception e) {
 //			rollback?
