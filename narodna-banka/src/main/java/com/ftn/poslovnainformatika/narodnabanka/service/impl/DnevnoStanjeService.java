@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 
+import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class DnevnoStanjeService implements com.ftn.poslovnainformatika.narodnab
 	
 	@Autowired
 	private DnevnoStanjeRepository dnevnoStanjeRepo;
+
+	@Autowired
+	private DtoConverter<DnevnoStanje, DnevnoStanjeDTO> dnevnoStanjeConverter;
 	
 	@Scheduled(cron = "@daily")
 	public void createDnevnaStanja() {
@@ -67,8 +71,9 @@ public class DnevnoStanjeService implements com.ftn.poslovnainformatika.narodnab
 
 	@Override
 	public DnevnoStanjeDTO getOne(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		DnevnoStanje dnevnoStanje = dnevnoStanjeRepo.getById(id);
+
+		return dnevnoStanjeConverter.convertToDTO(dnevnoStanje);
 	}
 
 	@Override
@@ -91,8 +96,9 @@ public class DnevnoStanjeService implements com.ftn.poslovnainformatika.narodnab
 
 	@Override
 	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
+		DnevnoStanje dnevnoStanje = dnevnoStanjeRepo.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
+		dnevnoStanjeRepo.deleteById(id);
 	}
 
 	@Override

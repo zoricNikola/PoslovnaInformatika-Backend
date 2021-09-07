@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("api/poslovne-banke")
 public class PoslovnaBankaController {
@@ -37,6 +39,12 @@ public class PoslovnaBankaController {
     public ResponseEntity<PoslovnaBankaDTO> getPoslovnaBanka(@PathVariable("id") int id) {
         PoslovnaBankaDTO dto = poslovnaBankaService.getOne(id);
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Set<PoslovnaBankaDTO>> getAll() {
+        Set<PoslovnaBankaDTO> banke = poslovnaBankaService.getAll();
+        return new ResponseEntity<>(banke, HttpStatus.OK);
     }
 
 }
