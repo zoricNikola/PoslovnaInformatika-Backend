@@ -13,13 +13,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface PorukaRepository extends JpaRepository<Poruka, Integer> {
 	
-	List<Poruka> findByDnevnoStanje_Id(int dnevnoStanjeId);
+	//List<Poruka> findByDnevnoStanje_Id(int dnevnoStanjeId);
 	
 	List<Poruka> findByVrstaPorukeAndKliring(VrstaPoruke vrstaPoruke, Kliring kliring);
 
 	@Query(value = "Select p from Poruka p WHERE " +
-			"p.bankaDuznika.sifraBanke = :bankaId OR " +
-			"p.bankaPoverioca.sifraBanke = :bankaId AND " +
+			"(p.bankaDuznika.sifraBanke = :bankaId OR " +
+			"p.bankaPoverioca.sifraBanke = :bankaId) AND " +
 			"(:startDatum is null OR p.datum >= :startDatum) AND " +
 			"(:endDatum is null OR p.datum <= :endDatum)")
 	List<Poruka> filterPoruke(@Param("bankaId") int bankaId,

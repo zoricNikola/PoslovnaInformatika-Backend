@@ -1,7 +1,6 @@
 package com.ftn.poslovnainformatika.narodnabanka.service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.ObracunskiRacunDTO;
@@ -17,5 +16,5 @@ public interface ObracunskiRacunService {
 
 	Set<StanjeObracunskogRacunaDTO> getStanjaObracunskihRacuna(LocalDate datum);
 
-	Set<IzvodObracunskogRacunaDTO> getIzvodObracunskogRacuna(int bankaId, LocalDate startDatum, LocalDate endDatum);
+	IzvodObracunskogRacunaDTO getIzvodObracunskogRacuna(int bankaId, LocalDate startDatum, LocalDate endDatum);
 }

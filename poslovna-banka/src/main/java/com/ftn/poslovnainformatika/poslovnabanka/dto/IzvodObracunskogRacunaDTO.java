@@ -1,4 +1,4 @@
-package com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji;
+package com.ftn.poslovnainformatika.poslovnabanka.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,18 @@ import lombok.Setter;
 
 import java.util.Set;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class IzvodObracunskogRacunaDTO {
 
     private Set<PorukaIzvodaDTO> porukeIzvoda;
+
+    @Override
+    public String toString() {
+        return "IzvodObracunskogRacunaDTO {" +
+                "porukeIzvoda = " + porukeIzvoda +
+                '}';
+    }
 }

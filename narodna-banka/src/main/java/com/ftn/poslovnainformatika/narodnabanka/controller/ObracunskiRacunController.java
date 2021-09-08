@@ -35,7 +35,7 @@ public class ObracunskiRacunController {
     }
 
     @GetMapping(value = "/{id}/izvod")
-    public ResponseEntity<Set<IzvodObracunskogRacunaDTO>> getIzvodObracunskogRacuna(@PathParam("id") int bankaId,
+    public ResponseEntity<IzvodObracunskogRacunaDTO> getIzvodObracunskogRacuna(@PathParam("id") int bankaId,
                                                                                      @RequestParam("startDatum") String startDatumStr,
                                                                                      @RequestParam("endDatum") String endDatumStr) {
         LocalDate startDatum = null;
@@ -47,8 +47,8 @@ public class ObracunskiRacunController {
             endDatum = LocalDate.parse(endDatumStr);
         } catch (Exception e) {}
 
-        Set<IzvodObracunskogRacunaDTO> izvodi = obracunskiRacunService.getIzvodObracunskogRacuna(bankaId, startDatum, endDatum);
+        IzvodObracunskogRacunaDTO izvod = obracunskiRacunService.getIzvodObracunskogRacuna(bankaId, startDatum, endDatum);
 
-        return new ResponseEntity<>(izvodi, HttpStatus.OK);
+        return new ResponseEntity<>(izvod, HttpStatus.OK);
     }
 }

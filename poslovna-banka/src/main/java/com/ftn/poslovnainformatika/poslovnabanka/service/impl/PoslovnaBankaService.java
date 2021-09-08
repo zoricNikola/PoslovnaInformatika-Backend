@@ -83,7 +83,6 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
         }else if(dto.getVrstaPoruke() == VrstaPoruke.MT103) {
             log.info("=== PRIMLJEN RTGS NALOG OD SERVISA NARODNE BANKE ===\n" + dto.toString());
         }
-        dto.toString();
         log.info("=============================================================");
     }
 
@@ -94,7 +93,13 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
         }else if(dto.getVrstaObavestenja() == VrstaObavestenja.MT910) {
             log.info("==== PRIMLJENA PORUKA O ODOBRENJU ===\n" + dto.toString());
         }
-        dto.toString();
+        log.info("==============================================================");
+    }
+
+    @Override
+    public void receiveIzvodObracunskogRacunaDTO(int bankaId, IzvodObracunskogRacunaDTO izvodDTO) {
+        log.info("=== PRIMLJEN IZVOD OBRACUNSKOG RACUNA ===\n");
+        log.info("=== Poslovna banka ID: " + bankaId + " ===\n" + izvodDTO.toString());
         log.info("==============================================================");
     }
 

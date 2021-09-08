@@ -1,5 +1,6 @@
 package com.ftn.poslovnainformatika.poslovnabanka.controller;
 
+import com.ftn.poslovnainformatika.poslovnabanka.dto.IzvodObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.poslovnabanka.dto.ObavestenjeDTO;
 import com.ftn.poslovnainformatika.poslovnabanka.dto.PorukaDTO;
 import com.ftn.poslovnainformatika.poslovnabanka.service.impl.PoslovnaBankaService;
@@ -36,6 +37,12 @@ public class PoslovnaBankaController {
     @PostMapping(value = "/receive/notification", consumes = "application/json")
     public ResponseEntity<Void> receiveObavestenje(@RequestBody ObavestenjeDTO obavestenjeDTO) {
         poslovnaBankaService.receiveObavestenjeDTO(obavestenjeDTO);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping(value = "/receive/izvod/{id}", consumes = "application/json")
+    public ResponseEntity<Void> receiveIzvod(@PathVariable("id") int bankaId, @RequestBody IzvodObracunskogRacunaDTO izvodDTO) {
+        poslovnaBankaService.receiveIzvodObracunskogRacunaDTO(bankaId, izvodDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

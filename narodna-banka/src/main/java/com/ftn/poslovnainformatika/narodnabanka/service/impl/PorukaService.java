@@ -245,6 +245,7 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 
 	@Override
 	public Set<PorukaDTO> getByDnevnoStanjeId(int stanjeId) {
-		return porukaConverter.convertToDTO(new HashSet<>(porukaRepo.findByDnevnoStanje_Id(stanjeId)));
+//		return porukaConverter.convertToDTO(new HashSet<>(porukaRepo.findByDnevnoStanje_Id(stanjeId)));
+		return new HashSet<>();
 	}
 }
