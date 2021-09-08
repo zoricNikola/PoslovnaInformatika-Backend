@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Set;
 
 public class KlijentService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.KlijentService {
     @Autowired
@@ -67,5 +69,11 @@ public class KlijentService implements com.ftn.poslovnainformatika.narodnabanka.
         Klijent klijent = klijentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
         klijentRepository.deleteById(id);
+    }
+
+    public Set<KlijentDTO> getAll(){
+        List<Klijent> klijenti = klijentRepository.findAll();
+
+        return klijentConverter.convertToDTO((Set<Klijent>) klijenti);
     }
 }

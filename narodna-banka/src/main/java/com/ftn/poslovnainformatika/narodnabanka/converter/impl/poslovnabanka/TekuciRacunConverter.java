@@ -10,10 +10,12 @@ import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.TekuciRa
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.KlijentRepository;
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.PoslovnaBankaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class TekuciRacunConverter implements DtoConverter<TekuciRacun, TekuciRacunDTO> {
     @Autowired
     private DtoConverter<PoslovnaBanka, PoslovnaBankaDTO> poslovnaBankaConverter;

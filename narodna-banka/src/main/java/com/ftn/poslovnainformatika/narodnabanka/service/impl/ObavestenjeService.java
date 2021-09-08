@@ -3,9 +3,11 @@ package com.ftn.poslovnainformatika.narodnabanka.service.impl;
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
 import com.ftn.poslovnainformatika.narodnabanka.dto.ObavestenjeDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.KlijentDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Obavestenje;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaObavestenja;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.Klijent;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.PoslovnaBanka;
 import com.ftn.poslovnainformatika.narodnabanka.repository.ObavestenjeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
@@ -75,6 +75,12 @@ public class ObavestenjeService implements com.ftn.poslovnainformatika.narodnaba
         Obavestenje obavestenje = obavestenjeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
         obavestenjeRepository.deleteById(id);
+    }
+
+    public Set<ObavestenjeDTO> getAll(){
+        List<Obavestenje> obavestenja = obavestenjeRepository.findAll();
+
+        return obavestenjeConverter.convertToDTO((Set<Obavestenje>) obavestenja);
     }
     
     @Override

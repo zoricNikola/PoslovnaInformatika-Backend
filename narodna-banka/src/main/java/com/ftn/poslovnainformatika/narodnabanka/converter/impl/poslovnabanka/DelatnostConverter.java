@@ -3,10 +3,12 @@ package com.ftn.poslovnainformatika.narodnabanka.converter.impl.poslovnabanka;
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.DelatnostDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.Delatnost;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class DelatnostConverter implements DtoConverter<Delatnost, DelatnostDTO> {
     @Override
     public DelatnostDTO convertToDTO(Delatnost source) {

@@ -54,7 +54,7 @@ public class Poruka {
 	private LocalDate datumValute;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn(name = "banka_duznika", referencedColumnName = "sifra_banke", nullable = false)
+	@JoinColumn(name = "banka_duznika", referencedColumnName = "sifra_banke")
 	private PoslovnaBanka bankaDuznika;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

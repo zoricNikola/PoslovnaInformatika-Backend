@@ -10,6 +10,8 @@ import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.TekuciR
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Set;
 
 public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.TekuciRacunService {
     @Autowired
@@ -83,5 +85,11 @@ public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnaba
         TekuciRacun tekuciRacun = tekuciRacunRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
         tekuciRacunRepository.deleteById(id);
+    }
+
+    public Set<TekuciRacunDTO> getAll(){
+        List<TekuciRacun> tekuciRacuni = tekuciRacunRepository.findAll();
+
+        return tekuciRacunConverter.convertToDTO((Set<TekuciRacun>) tekuciRacuni);
     }
 }
