@@ -1,7 +1,11 @@
 package com.ftn.poslovnainformatika.narodnabanka.controller;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.DnevnoStanjeDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.service.DnevnoStanjeService;
+
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +34,12 @@ public class DnevnoStanjeController {
     public ResponseEntity<Void> deleteDnevnoStanje(@PathVariable("id") int id) {
         dnevnoStanjeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+    @GetMapping(value = "/{id}/poruke", produces = "application/json")
+    public ResponseEntity<Set<PorukaDTO>> getPorukeStanja(@PathVariable("id") int id) {
+        Set<PorukaDTO> poruke = dnevnoStanjeService.getPorukeStanja(id);
+        
+        return new ResponseEntity<>(poruke, HttpStatus.OK);
     }
 }

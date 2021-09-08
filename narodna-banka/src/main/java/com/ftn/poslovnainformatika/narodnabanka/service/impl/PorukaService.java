@@ -30,6 +30,7 @@ import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
 import com.ftn.poslovnainformatika.narodnabanka.repository.KliringRepository;
 import com.ftn.poslovnainformatika.narodnabanka.repository.PorukaRepository;
+import com.ftn.poslovnainformatika.narodnabanka.service.NalogService;
 import com.ftn.poslovnainformatika.narodnabanka.service.ObavestenjeService;
 
 import reactor.core.publisher.Mono;
@@ -45,6 +46,9 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	
 	@Autowired
 	private DtoConverter<Nalog, NalogDTO> nalogConverter;
+	
+	@Autowired
+	private NalogService nalogService;
 	
 	@Autowired
 	private DnevnoStanjeService stanjeService;
@@ -232,5 +236,15 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 			.exchangeToMono(response -> response.bodyToMono(Void.class))
 			.subscribe(System.out::println);
 
+	}
+
+	@Override
+	public Set<NalogDTO> getNaloziPoruke(int porukaId) {
+		return nalogService.getByPorukaId(porukaId);
+	}
+
+	@Override
+	public Set<PorukaDTO> getByDnevnoStanjeId(int stanjeId) {
+		return porukaConverter.convertToDTO(new HashSet<>(porukaRepo.findByDnevnoStanje_Id(stanjeId)));
 	}
 }

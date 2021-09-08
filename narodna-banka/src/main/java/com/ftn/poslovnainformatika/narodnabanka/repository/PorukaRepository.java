@@ -3,8 +3,6 @@ package com.ftn.poslovnainformatika.narodnabanka.repository;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Kliring;
@@ -15,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface PorukaRepository extends JpaRepository<Poruka, Integer> {
 	
-	//Page<Poruka> findByDnevnoStanje_Id(int dnevnoStanjeId, Pageable pageable);
+	List<Poruka> findByDnevnoStanje_Id(int dnevnoStanjeId);
 	
 	List<Poruka> findByVrstaPorukeAndKliring(VrstaPoruke vrstaPoruke, Kliring kliring);
 

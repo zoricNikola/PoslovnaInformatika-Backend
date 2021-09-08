@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.DnevnoStanjeDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.ObracunskiRacunDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.DnevnoStanje;
 import com.ftn.poslovnainformatika.narodnabanka.repository.DnevnoStanjeRepository;
 import com.ftn.poslovnainformatika.narodnabanka.service.ObracunskiRacunService;
+import com.ftn.poslovnainformatika.narodnabanka.service.PorukaService;
 
 @Service
 public class DnevnoStanjeService implements com.ftn.poslovnainformatika.narodnabanka.service.DnevnoStanjeService {
@@ -28,6 +30,9 @@ public class DnevnoStanjeService implements com.ftn.poslovnainformatika.narodnab
 	
 	@Autowired
 	private DnevnoStanjeRepository dnevnoStanjeRepo;
+	
+	@Autowired
+	private PorukaService porukaService;
 
 	@Autowired
 	private DtoConverter<DnevnoStanje, DnevnoStanjeDTO> dnevnoStanjeConverter;
@@ -112,6 +117,11 @@ public class DnevnoStanjeService implements com.ftn.poslovnainformatika.narodnab
 	@Override
 	public void saveAll(Collection<DnevnoStanje> stanja) {
 		dnevnoStanjeRepo.saveAll(stanja);
+	}
+
+	@Override
+	public Set<PorukaDTO> getPorukeStanja(int id) {
+		return porukaService.getByDnevnoStanjeId(id);
 	}
 
 }
