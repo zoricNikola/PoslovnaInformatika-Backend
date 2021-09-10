@@ -21,6 +21,12 @@ public class KlijentController {
         return new ResponseEntity<>(klijentDTO, HttpStatus.OK);
     }
 
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<Integer> createKlijent(@RequestBody KlijentDTO klijentDTO){
+        klijentService.create(klijentDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PutMapping(value = "/{id}", consumes = "application/json")
     public ResponseEntity<Void> updateKlijent(@PathVariable("id") int id, @RequestBody KlijentDTO klijentDTO){
         klijentService.update(id, klijentDTO);
@@ -34,7 +40,7 @@ public class KlijentController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<Set<KlijentDTO>> getKlijent(){
+    public ResponseEntity<Set<KlijentDTO>> getKlijenti(){
         Set<KlijentDTO> klijenti = klijentService.getAll();
         return new ResponseEntity<>(klijenti, HttpStatus.OK);
     }

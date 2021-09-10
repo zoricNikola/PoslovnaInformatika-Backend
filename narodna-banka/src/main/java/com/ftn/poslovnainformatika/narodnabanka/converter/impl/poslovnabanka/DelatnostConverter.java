@@ -26,7 +26,7 @@ public class DelatnostConverter implements DtoConverter<Delatnost, DelatnostDTO>
 
     @Override
     public Delatnost convertToJPA(DelatnostDTO source) {
-        Delatnost jpa = new Delatnost(null, source.getSifraDelatnosti(), source.getNazivDelatnosti(),null);
+        Delatnost jpa = new Delatnost(source.getId(), source.getSifraDelatnosti(), source.getNazivDelatnosti(),null);
 
         return jpa;
     }
