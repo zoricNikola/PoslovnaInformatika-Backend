@@ -23,7 +23,7 @@ public class KlijentConverter implements DtoConverter<Klijent, KlijentDTO> {
     @Autowired
     private DtoConverter<Mesto, MestoDTO> mestoConverter;
 
-    //@Autowired
+    @Autowired
     private DtoConverter<Delatnost, DelatnostDTO> delatnostConverter;
 
     @Autowired

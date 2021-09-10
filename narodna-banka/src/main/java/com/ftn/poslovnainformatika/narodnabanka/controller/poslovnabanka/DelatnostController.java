@@ -1,6 +1,7 @@
 package com.ftn.poslovnainformatika.narodnabanka.controller.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.DelatnostDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.KlijentDTO;
 import com.ftn.poslovnainformatika.narodnabanka.service.impl.poslovnabanka.DelatnostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

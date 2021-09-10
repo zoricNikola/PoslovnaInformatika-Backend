@@ -11,11 +11,14 @@ import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.Klijent
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.TekuciRacunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class KlijentService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.KlijentService {
     @Autowired
     private DtoConverter<Klijent, KlijentDTO> klijentConverter;
@@ -52,14 +55,15 @@ public class KlijentService implements com.ftn.poslovnainformatika.narodnabanka.
     public void update(int id, KlijentDTO klijentDTO) {
         Klijent klijent = klijentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
-        klijent.setAdresa(klijentDTO.getAdresa());
-        klijent.setDelatnost(delatnostConverter.convertToJPA(klijentDTO.getDelatnost()));
-        klijent.setIme(klijentDTO.getIme());
-        klijent.setMesto(mestoConverter.convertToJPA(klijentDTO.getMesto()));
-        klijent.setPib(klijentDTO.getPib());
-        klijent.setPrezime(klijentDTO.getPrezime());
-        klijent.setNaziv(klijentDTO.getNaziv());
-        klijent.setRacuni(tekuciRacunRepository.findByKlijent_Id(id, Pageable.unpaged()).toSet());
+        Klijent newKlijent = klijentConverter.convertToJPA(klijentDTO);
+
+        klijent.setAdresa(newKlijent.getAdresa());
+        klijent.setDelatnost(newKlijent.getDelatnost());
+        klijent.setIme(newKlijent.getIme());
+        klijent.setMesto(newKlijent.getMesto());
+        klijent.setPib(newKlijent.getPib());
+        klijent.setPrezime(newKlijent.getPrezime());
+        klijent.setNaziv(newKlijent.getNaziv());
 
         klijentRepository.save(klijent);
     }
@@ -74,6 +78,9 @@ public class KlijentService implements com.ftn.poslovnainformatika.narodnabanka.
     public Set<KlijentDTO> getAll(){
         List<Klijent> klijenti = klijentRepository.findAll();
 
-        return klijentConverter.convertToDTO((Set<Klijent>) klijenti);
+        Set<Klijent> klijentSet = new HashSet<>();
+        for (Klijent k : klijenti) klijentSet.add(k);
+
+        return klijentConverter.convertToDTO(klijentSet);
     }
 }
