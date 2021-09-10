@@ -98,7 +98,7 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.poslovn
 
     @Override
     public void receiveIzvodObracunskogRacunaDTO(int bankaId, IzvodObracunskogRacunaDTO izvodDTO) {
-        log.info("=== PRIMLJEN IZVOD OBRACUNSKOG RACUNA ===\n");
+        log.info("\n=== PRIMLJEN IZVOD OBRACUNSKOG RACUNA ===");
         log.info("=== Poslovna banka ID: " + bankaId + " ===\n" + izvodDTO.toString());
         log.info("==============================================================");
     }

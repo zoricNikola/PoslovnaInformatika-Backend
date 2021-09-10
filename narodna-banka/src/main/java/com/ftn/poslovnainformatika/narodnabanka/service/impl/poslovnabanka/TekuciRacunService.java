@@ -8,11 +8,13 @@ import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.TekuciRa
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.KlijentRepository;
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.TekuciRacunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.TekuciRacunService {
     @Autowired
     private DtoConverter<TekuciRacun, TekuciRacunDTO> tekuciRacunConverter;

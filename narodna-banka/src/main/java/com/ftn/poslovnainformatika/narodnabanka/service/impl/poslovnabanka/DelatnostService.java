@@ -5,11 +5,13 @@ import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.DelatnostDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.Delatnost;
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.DelatnostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class DelatnostService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.DelatnostService {
     @Autowired
     private DtoConverter<Delatnost, DelatnostDTO> delatnostConverter;

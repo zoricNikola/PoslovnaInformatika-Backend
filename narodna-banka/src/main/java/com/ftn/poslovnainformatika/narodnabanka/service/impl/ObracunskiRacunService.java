@@ -99,7 +99,7 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 	}
 
 	//@Scheduled(cron = "0 10 1 * * ?")
-	//@Scheduled(cron = "0 */1 * * * *")
+	@Scheduled(cron = "0 */3 * * * *")
 	//@Scheduled(cron = "@monthly")
 	public void sendIzvodObracunskogRacuna() {
 		System.out.println("Slanje izvoda obracunskih racuna...");
@@ -108,14 +108,13 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 		LocalDate startPreviousMonth = today.minusMonths(1);
 		LocalDate endPreviousMonth = startPreviousMonth.withDayOfMonth(startPreviousMonth.lengthOfMonth());
 
-		System.out.println("Datumiiiii " + today + " " + startPreviousMonth + " " + endPreviousMonth);
+		System.out.println("Datumii: " + today + " " + startPreviousMonth + " " + endPreviousMonth);
 
 		Set<PoslovnaBankaDTO> poslovneBanke = poslovnaBankaService.getAll();
 
 		if(poslovneBanke != null && !poslovneBanke.isEmpty()){
 			poslovneBanke.forEach(poslovnaBankaDTO -> {
 				Set<PorukaDTO> poruke = porukaService.getByPoslovnaBankaAndDatumRange(poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
-				System.out.println("Exception " + porukaService.getByPoslovnaBankaAndDatumRange(poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth));
 				IzvodObracunskogRacunaDTO izvodPoslovneBanke = getIzvod(poruke);
 				forwardIzvod(poslovnaBankaDTO.getSifraBanke(), izvodPoslovneBanke);
 			});
@@ -144,7 +143,8 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 	}
 
 	private void forwardIzvod(int bankaId, IzvodObracunskogRacunaDTO izvod) {
-		webClient.post()
+		if(poslovneBankeServices.get(bankaId) != null)
+			webClient.post()
 				.uri(String.format("%s%s", poslovneBankeServices.get(bankaId), "/receive/izvod/" + bankaId))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.body(Mono.just(izvod), IzvodObracunskogRacunaDTO.class)

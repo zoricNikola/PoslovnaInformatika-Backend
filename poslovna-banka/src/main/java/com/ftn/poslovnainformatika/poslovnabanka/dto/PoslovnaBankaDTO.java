@@ -16,4 +16,13 @@ public class PoslovnaBankaDTO {
     private String nazivBanke;
 
     private String swiftKod;
+
+    @Override
+    public String toString() {
+        return "PoslovnaBankaDTO {" +
+                "sifraBanke = " + sifraBanke +
+                ", nazivBanke = '" + nazivBanke + '\'' +
+                ", swiftKod= '" + swiftKod + '\'' +
+                '}';
+    }
 }

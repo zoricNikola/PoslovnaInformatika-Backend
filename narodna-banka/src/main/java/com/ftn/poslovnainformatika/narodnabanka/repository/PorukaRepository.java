@@ -17,9 +17,9 @@ public interface PorukaRepository extends JpaRepository<Poruka, Integer> {
 	
 	List<Poruka> findByVrstaPorukeAndKliring(VrstaPoruke vrstaPoruke, Kliring kliring);
 
-	@Query(value = "Select p from Poruka p WHERE " +
-			"(p.bankaDuznika.sifraBanke = :bankaId OR " +
-			"p.bankaPoverioca.sifraBanke = :bankaId) AND " +
+	@Query(value = "SELECT p from Poruka p WHERE " +
+			"((p.bankaDuznika.sifraBanke = :bankaId) OR " +
+			"(p.bankaPoverioca.sifraBanke = :bankaId)) AND " +
 			"(:startDatum is null OR p.datum >= :startDatum) AND " +
 			"(:endDatum is null OR p.datum <= :endDatum)")
 	List<Poruka> filterPoruke(@Param("bankaId") int bankaId,

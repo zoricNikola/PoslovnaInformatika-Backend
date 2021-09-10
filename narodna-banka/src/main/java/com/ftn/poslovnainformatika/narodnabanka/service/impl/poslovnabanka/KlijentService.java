@@ -11,11 +11,13 @@ import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.Klijent
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.TekuciRacunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class KlijentService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.KlijentService {
     @Autowired
     private DtoConverter<Klijent, KlijentDTO> klijentConverter;
