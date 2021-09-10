@@ -54,14 +54,15 @@ public class TekuciRacunService{
                     tekuciRacunDTO.getKlijent().getPib(), tekuciRacunDTO.getKlijent().getMesto(),
                     tekuciRacunDTO.getKlijent().getDelatnost());
 
-
-            tekuciRacunDTO.setKlijent(klijentDTO);
+            Klijent klijent = klijentRepository.save(klijentConverter.convertToJPA(klijentDTO));
 
             tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
+            tekuciRacun.setBrojRacuna(tekuciRacunDTO.getId());
+            tekuciRacun.setKlijent(klijent);
             tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
         }else {
             tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
-            tekuciRacun.setBrojRacuna(tekuciRacunDTO.getId().toString());
+            tekuciRacun.setBrojRacuna(tekuciRacunDTO.getId());
             tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
         }
 

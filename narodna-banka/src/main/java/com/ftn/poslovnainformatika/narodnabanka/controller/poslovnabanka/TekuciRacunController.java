@@ -24,8 +24,6 @@ public class TekuciRacunController {
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<Void> createTekuciRacun(@RequestBody TekuciRacunDTO tekuciRacunDTO){
-
-        System.out.println(tekuciRacunDTO.getId());
         tekuciRacunService.createe(tekuciRacunDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
