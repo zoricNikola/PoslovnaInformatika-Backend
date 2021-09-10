@@ -1,5 +1,6 @@
 package com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji;
 
+import com.ftn.poslovnainformatika.narodnabanka.dto.NalogDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,4 +32,6 @@ public class PorukaIzvodaDTO {
     private PoslovnaBankaDTO bankaDuznika;
 
     private PoslovnaBankaDTO bankaPoverioca;
+    
+    private Set<NalogDTO> nalozi;
 }

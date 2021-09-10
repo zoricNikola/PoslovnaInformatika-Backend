@@ -83,4 +83,10 @@ public class KlijentService implements com.ftn.poslovnainformatika.narodnabanka.
 
         return klijentConverter.convertToDTO(klijentSet);
     }
+
+	@Override
+	public Set<KlijentDTO> getKlijentiByBanka(int sifraBanke) {
+		Set<Klijent> klijenti = klijentRepository.findByRacuni_PoslovnaBanka_SifraBanke(sifraBanke);
+		return klijentConverter.convertToDTO(klijenti);
+	}
 }

@@ -1,6 +1,8 @@
 package com.ftn.poslovnainformatika.narodnabanka.controller.poslovnabanka;
 
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.KlijentDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.TekuciRacunDTO;
 import com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.PoslovnaBankaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,18 @@ public class PoslovnaBankaController {
     public ResponseEntity<Set<PoslovnaBankaDTO>> getAll() {
         Set<PoslovnaBankaDTO> banke = poslovnaBankaService.getAll();
         return new ResponseEntity<>(banke, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/{sifraBanke}/klijenti", produces = "application/json")
+    public ResponseEntity<Set<KlijentDTO>> getPoslovnaBankaKlijenti(@PathVariable("sifraBanke") int sifraBanke) {
+    	Set<KlijentDTO> klijenti = poslovnaBankaService.getPoslovnaBankaKlijenti(sifraBanke);
+    	return new ResponseEntity<>(klijenti, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/{sifraBanke}/tekuciRacuni", produces = "application/json")
+    public ResponseEntity<Set<TekuciRacunDTO>> getPoslovnaBankaRacuni(@PathVariable("sifraBanke") int sifraBanke) {
+    	Set<TekuciRacunDTO> racuni = poslovnaBankaService.getPoslovnaBankaRacuni(sifraBanke);
+    	return new ResponseEntity<>(racuni, HttpStatus.OK);
     }
 
 }

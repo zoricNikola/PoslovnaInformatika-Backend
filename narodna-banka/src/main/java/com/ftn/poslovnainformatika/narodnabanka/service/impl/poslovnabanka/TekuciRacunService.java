@@ -7,6 +7,7 @@ import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.Klijent;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.TekuciRacun;
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.KlijentRepository;
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.TekuciRacunRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class TekuciRacunService{
+public class TekuciRacunService implements com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.TekuciRacunService{
     @Autowired
     private DtoConverter<TekuciRacun, TekuciRacunDTO> tekuciRacunConverter;
 
@@ -32,19 +33,19 @@ public class TekuciRacunService{
     @Autowired
     KlijentRepository klijentRepository;
 
-
+    @Override
     public TekuciRacunDTO getOne(String id) {
         TekuciRacun tekuciRacun = tekuciRacunRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
         return tekuciRacunConverter.convertToDTO(tekuciRacun);
     }
 
-
+    @Override
     public int create(TekuciRacunDTO tekuciRacunDTO) {
         return 0;
     }
 
-
+	@Override
     public String createe(TekuciRacunDTO tekuciRacunDTO) {
         TekuciRacun tekuciRacun;
 
@@ -57,18 +58,18 @@ public class TekuciRacunService{
             Klijent klijent = klijentRepository.save(klijentConverter.convertToJPA(klijentDTO));
 
             tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
-            tekuciRacun.setBrojRacuna(tekuciRacunDTO.getId());
+            tekuciRacun.setBrojRacuna(tekuciRacunDTO.getBrojRacuna());
             tekuciRacun.setKlijent(klijent);
             tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
         }else {
             tekuciRacun = tekuciRacunConverter.convertToJPA(tekuciRacunDTO);
-            tekuciRacun.setBrojRacuna(tekuciRacunDTO.getId());
             tekuciRacun = tekuciRacunRepository.save(tekuciRacun);
         }
 
         return tekuciRacun.getBrojRacuna();
     }
 
+    @Override
     public void delete(String id) {
         TekuciRacun tekuciRacun = tekuciRacunRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
@@ -83,4 +84,28 @@ public class TekuciRacunService{
 
         return tekuciRacunConverter.convertToDTO(tekuciRacuniSet);
     }
+
+	@Override
+	public TekuciRacunDTO getOne(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(int id, TekuciRacunDTO dto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Set<TekuciRacunDTO> getRacuniByBanka(int sifraBanke) {
+		Set<TekuciRacun> racuni = tekuciRacunRepository.findByPoslovnaBanka_SifraBanke(sifraBanke);
+		return tekuciRacunConverter.convertToDTO(racuni);
+	}
 }

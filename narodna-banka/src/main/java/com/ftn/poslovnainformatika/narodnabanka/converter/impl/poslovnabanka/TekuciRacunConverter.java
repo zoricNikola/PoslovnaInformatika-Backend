@@ -56,7 +56,7 @@ public class TekuciRacunConverter implements DtoConverter<TekuciRacun, TekuciRac
     	else
     		klijent = klijentRepository.getById(source.getKlijent().getId());
     	
-        TekuciRacun jpa = new TekuciRacun(null, klijent,
+        TekuciRacun jpa = new TekuciRacun(source.getBrojRacuna(), klijent,
                                             poslovnaBankaRepository.getById(source.getPoslovnaBanka().getSifraBanke()));
 
         return jpa;

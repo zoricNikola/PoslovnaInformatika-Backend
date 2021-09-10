@@ -1,9 +1,14 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.impl.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.KlijentDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.TekuciRacunDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.PoslovnaBanka;
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.PoslovnaBankaRepository;
+import com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.KlijentService;
+import com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.TekuciRacunService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +25,12 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.narodna
 
     @Autowired
     private PoslovnaBankaRepository poslovnaBankaRepo;
+    
+    @Autowired
+    private KlijentService klijentService;
+    
+    @Autowired
+    private TekuciRacunService racunService;
 
     @Override
     public PoslovnaBankaDTO getOne(int id) {
@@ -67,4 +78,14 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.narodna
 
         return poslovnaBankaConverter.convertToDTO(new HashSet<>(poslovneBanke));
     }
+
+	@Override
+	public Set<KlijentDTO> getPoslovnaBankaKlijenti(int sifraBanke) {
+		return klijentService.getKlijentiByBanka(sifraBanke);
+	}
+	
+	@Override
+	public Set<TekuciRacunDTO> getPoslovnaBankaRacuni(int sifraBanke) {
+		return racunService.getRacuniByBanka(sifraBanke);
+	}
 }

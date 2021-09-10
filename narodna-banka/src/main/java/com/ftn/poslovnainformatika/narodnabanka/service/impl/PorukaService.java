@@ -23,11 +23,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
 import com.ftn.poslovnainformatika.narodnabanka.dto.NalogDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.PorukaDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.PorukaIzvodaDTO;
+import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.DnevnoStanje;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Kliring;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Nalog;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.Poruka;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.VrstaPoruke;
+import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.PoslovnaBanka;
 import com.ftn.poslovnainformatika.narodnabanka.repository.KliringRepository;
 import com.ftn.poslovnainformatika.narodnabanka.repository.PorukaRepository;
 import com.ftn.poslovnainformatika.narodnabanka.service.NalogService;
@@ -63,7 +66,10 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
     private WebClient webClient;
     
     @Resource(name = "poslovneBankeServices")
-    public Map<Integer, String> poslovneBankeServices;
+    private Map<Integer, String> poslovneBankeServices;
+    
+    @Autowired
+    private DtoConverter<PoslovnaBanka, PoslovnaBankaDTO> bankaConverter;
 	
 	@Override
 	public PorukaDTO getOne(int id) {
@@ -217,10 +223,22 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	}
 
 	@Override
-	public Set<PorukaDTO> getByPoslovnaBankaAndDatumRange(int bankaId, LocalDate startDatum, LocalDate endDatum) {
-		List<Poruka> poruke = porukaRepo.filterPoruke(bankaId, startDatum, endDatum);
-
-		return porukaConverter.convertToDTO(new HashSet<>(poruke));
+	public Set<PorukaIzvodaDTO> getPorukeIzvoda(int sifraBanke, LocalDate startDatum, LocalDate endDatum) {
+		List<Poruka> poruke = porukaRepo.filterPoruke(sifraBanke, startDatum, endDatum);
+		
+		Set<PorukaIzvodaDTO> porukeIzvoda = new HashSet<>();
+		
+		for (Poruka p : poruke) {
+			PorukaIzvodaDTO pI = new PorukaIzvodaDTO(p.getId(), p.getDatum(), p.getVrstaPoruke(), 
+					p.getUkupanIznos(), p.getSifraValute(), p.getDatumValute(), 
+					bankaConverter.convertToDTO(p.getBankaDuznika()), 
+					bankaConverter.convertToDTO(p.getBankaPoverioca()), 
+					nalogConverter.convertToDTO(p.getNalozi()));
+			
+			porukeIzvoda.add(pI);
+		}
+		
+		return porukeIzvoda;
 	}
 	
 	private void forwardPoruka(Poruka poruka) {

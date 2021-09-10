@@ -92,8 +92,8 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 
 	@Override
 	public IzvodObracunskogRacunaDTO getIzvodObracunskogRacuna(int bankaId, LocalDate startDatum, LocalDate endDatum) {
-		Set<PorukaDTO> poruke = porukaService.getByPoslovnaBankaAndDatumRange(bankaId, startDatum, endDatum);
-		IzvodObracunskogRacunaDTO izvod = getIzvod(poruke);
+		Set<PorukaIzvodaDTO> poruke = porukaService.getPorukeIzvoda(bankaId, startDatum, endDatum);
+		IzvodObracunskogRacunaDTO izvod = new IzvodObracunskogRacunaDTO(poruke);
 
 		return izvod;
 	}
@@ -114,32 +114,12 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 
 		if(poslovneBanke != null && !poslovneBanke.isEmpty()){
 			poslovneBanke.forEach(poslovnaBankaDTO -> {
-				Set<PorukaDTO> poruke = porukaService.getByPoslovnaBankaAndDatumRange(poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
-				IzvodObracunskogRacunaDTO izvodPoslovneBanke = getIzvod(poruke);
+				IzvodObracunskogRacunaDTO izvodPoslovneBanke = getIzvodObracunskogRacuna(
+						poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
+				
 				forwardIzvod(poslovnaBankaDTO.getSifraBanke(), izvodPoslovneBanke);
 			});
 		}
-	}
-
-	private IzvodObracunskogRacunaDTO getIzvod(Set<PorukaDTO> poruke) {
-		IzvodObracunskogRacunaDTO izvod = new IzvodObracunskogRacunaDTO();
-		izvod.setPorukeIzvoda(new HashSet<>());
-
-		if(poruke != null && !poruke.isEmpty()){
-			poruke.forEach(porukaDTO -> {
-				PorukaIzvodaDTO porukaIzvodaDTO = new PorukaIzvodaDTO();
-				porukaIzvodaDTO.setId(porukaDTO.getId());
-				porukaIzvodaDTO.setDatum(porukaDTO.getDatum());
-				porukaIzvodaDTO.setDatumValute(porukaDTO.getDatumValute());
-				porukaIzvodaDTO.setSifraValute(porukaDTO.getSifraValute());
-				porukaIzvodaDTO.setUkupanIznos(porukaDTO.getUkupanIznos());
-				porukaIzvodaDTO.setVrstaPoruke(porukaDTO.getVrstaPoruke());
-				porukaIzvodaDTO.setBankaDuznika(porukaDTO.getBankaDuznika());
-				porukaIzvodaDTO.setBankaPoverioca(porukaDTO.getBankaPoverioca());
-				izvod.getPorukeIzvoda().add(porukaIzvodaDTO);
-			});
-		}
-		return izvod;
 	}
 
 	private void forwardIzvod(int bankaId, IzvodObracunskogRacunaDTO izvod) {

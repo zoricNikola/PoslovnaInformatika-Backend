@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +29,8 @@ public class PorukaIzvodaDTO {
     private PoslovnaBankaDTO bankaDuznika;
 
     private PoslovnaBankaDTO bankaPoverioca;
+    
+    private Set<NalogDTO> nalozi;
 
     @Override
     public String toString() {
@@ -40,6 +43,7 @@ public class PorukaIzvodaDTO {
                 ", datumValute = " + datumValute +
                 ", bankaDuznika = " + bankaDuznika +
                 ", bankaPoverioca = " + bankaPoverioca +
+                ", nalozi = " + nalozi +
                 '}';
     }
 }
