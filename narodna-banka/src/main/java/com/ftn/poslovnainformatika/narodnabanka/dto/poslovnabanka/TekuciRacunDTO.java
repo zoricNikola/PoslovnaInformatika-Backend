@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TekuciRacunDTO {
-    private Integer id;
+    private String id;
     private PoslovnaBankaDTO poslovnaBanka;
     private KlijentDTO klijent;
 }

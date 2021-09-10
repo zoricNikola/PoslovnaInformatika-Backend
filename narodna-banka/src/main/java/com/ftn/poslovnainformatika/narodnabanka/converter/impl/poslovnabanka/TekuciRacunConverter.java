@@ -34,7 +34,7 @@ public class TekuciRacunConverter implements DtoConverter<TekuciRacun, TekuciRac
         PoslovnaBankaDTO poslovnaBankaDTO = poslovnaBankaConverter.convertToDTO(source.getPoslovnaBanka());
         KlijentDTO klijentDTO = klijentConverter.convertToDTO(source.getKlijent());
 
-        TekuciRacunDTO dto = new TekuciRacunDTO(Integer.valueOf(source.getBrojRacuna()), poslovnaBankaDTO, klijentDTO);
+        TekuciRacunDTO dto = new TekuciRacunDTO(source.getBrojRacuna(), poslovnaBankaDTO, klijentDTO);
 
         return dto;
     }

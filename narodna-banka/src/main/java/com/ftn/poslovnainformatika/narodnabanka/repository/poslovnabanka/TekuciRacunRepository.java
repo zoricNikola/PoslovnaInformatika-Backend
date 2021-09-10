@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.TekuciRacun;
 
 
-public interface TekuciRacunRepository extends JpaRepository<TekuciRacun, Integer> {
+public interface TekuciRacunRepository extends JpaRepository<TekuciRacun, String> {
     Page<TekuciRacun> findByPoslovnaBanka_SifraBanke(int sifraPoslovneBanke, Pageable pageable);
     Page<TekuciRacun> findByKlijent_Id(int klijentId, Pageable pageable);
 }
