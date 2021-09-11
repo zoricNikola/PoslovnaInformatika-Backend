@@ -77,15 +77,20 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 		Set<PoslovnaBankaDTO> banke = poslovnaBankaService.getAll();
 
 		banke.forEach(poslovnaBankaDTO -> {
-			DnevnoStanje dnevnoStanje = dnevnoStanjeService.
-					getByBrojObracunskogRacunaAndDatum(poslovnaBankaDTO.getObracunskiRacun().getBrojObracunskogRacuna(), datum);
+			try {
+				DnevnoStanje dnevnoStanje = dnevnoStanjeService.
+						getByBrojObracunskogRacunaAndDatum(poslovnaBankaDTO.getObracunskiRacun().getBrojObracunskogRacuna(), datum);
 
-			if(dnevnoStanje != null) {
-				StanjeObracunskogRacunaDTO stanje = new StanjeObracunskogRacunaDTO();
-				stanje.setPoslovnaBanka(poslovnaBankaDTO);
-				stanje.setDnevnoStanje(dnevnoStanjeConverter.convertToDTO(dnevnoStanje));
-				stanja.add(stanje);
+				if(dnevnoStanje != null) {
+					StanjeObracunskogRacunaDTO stanje = new StanjeObracunskogRacunaDTO();
+					stanje.setPoslovnaBanka(poslovnaBankaDTO);
+					stanje.setDnevnoStanje(dnevnoStanjeConverter.convertToDTO(dnevnoStanje));
+					stanja.add(stanje);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
+			
 		});
 		return stanja;
 	}

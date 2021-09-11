@@ -20,7 +20,7 @@ public class ObracunskiRacunController {
     @Autowired
     private ObracunskiRacunService obracunskiRacunService;
 
-    @GetMapping(value = "/stanje")
+    @GetMapping(value = "/stanja")
     public ResponseEntity<Set<StanjeObracunskogRacunaDTO>> getStanjaObracunskihRacuna(@RequestParam(name = "datum") String datumString) {
         LocalDate datum = null;
         try {
