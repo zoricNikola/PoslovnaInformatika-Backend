@@ -1,11 +1,13 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.impl.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
+import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.IzvodObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.KlijentDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.TekuciRacunDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.poslovnabanka.PoslovnaBanka;
 import com.ftn.poslovnainformatika.narodnabanka.repository.poslovnabanka.PoslovnaBankaRepository;
+import com.ftn.poslovnainformatika.narodnabanka.service.ObracunskiRacunService;
 import com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.KlijentService;
 import com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.TekuciRacunService;
 
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +35,9 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.narodna
     
     @Autowired
     private TekuciRacunService racunService;
+    
+    @Autowired
+    private ObracunskiRacunService obracunskiRacunService;
 
     @Override
     public PoslovnaBankaDTO getOne(int id) {
@@ -87,5 +94,11 @@ public class PoslovnaBankaService implements com.ftn.poslovnainformatika.narodna
 	@Override
 	public Set<TekuciRacunDTO> getPoslovnaBankaRacuni(int sifraBanke) {
 		return racunService.getRacuniByBanka(sifraBanke);
+	}
+
+	@Override
+	public IzvodObracunskogRacunaDTO getIzvodObracunskogRacuna(int sifraBanke, LocalDate startDatum,
+			LocalDate endDatum) {
+		return obracunskiRacunService.getIzvodObracunskogRacuna(sifraBanke, startDatum, endDatum);
 	}
 }

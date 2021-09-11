@@ -223,10 +223,10 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 	}
 
 	@Override
-	public Set<PorukaIzvodaDTO> getPorukeIzvoda(int sifraBanke, LocalDate startDatum, LocalDate endDatum) {
+	public List<PorukaIzvodaDTO> getPorukeIzvoda(int sifraBanke, LocalDate startDatum, LocalDate endDatum) {
 		List<Poruka> poruke = porukaRepo.filterPoruke(sifraBanke, startDatum, endDatum);
 		
-		Set<PorukaIzvodaDTO> porukeIzvoda = new HashSet<>();
+		List<PorukaIzvodaDTO> porukeIzvoda = new ArrayList<>();
 		
 		for (Poruka p : poruke) {
 			PorukaIzvodaDTO pI = new PorukaIzvodaDTO(p.getId(), p.getDatum(), p.getVrstaPoruke(), 

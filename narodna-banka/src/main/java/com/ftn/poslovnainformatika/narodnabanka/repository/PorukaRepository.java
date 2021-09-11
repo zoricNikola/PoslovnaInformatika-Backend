@@ -21,7 +21,8 @@ public interface PorukaRepository extends JpaRepository<Poruka, Integer> {
 			"((p.bankaDuznika.sifraBanke = :bankaId) OR " +
 			"(p.bankaPoverioca.sifraBanke = :bankaId)) AND " +
 			"(:startDatum is null OR p.datum >= :startDatum) AND " +
-			"(:endDatum is null OR p.datum <= :endDatum)")
+			"(:endDatum is null OR p.datum <= :endDatum)"
+			+ "ORDER BY p.datum ASC")
 	List<Poruka> filterPoruke(@Param("bankaId") int bankaId,
 							  @Param("startDatum")LocalDate startDatum,
 							  @Param("endDatum") LocalDate endDatum);

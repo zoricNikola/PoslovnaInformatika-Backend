@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,5 +13,5 @@ import java.util.Set;
 @AllArgsConstructor
 public class IzvodObracunskogRacunaDTO {
 
-    private Set<PorukaIzvodaDTO> porukeIzvoda;
+    private List<PorukaIzvodaDTO> porukeIzvoda;
 }

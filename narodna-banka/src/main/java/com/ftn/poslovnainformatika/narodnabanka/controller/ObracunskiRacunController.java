@@ -1,6 +1,5 @@
 package com.ftn.poslovnainformatika.narodnabanka.controller;
 
-import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.IzvodObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.StanjeObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.service.ObracunskiRacunService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -34,21 +32,4 @@ public class ObracunskiRacunController {
         return new ResponseEntity<>(stanja, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}/izvod")
-    public ResponseEntity<IzvodObracunskogRacunaDTO> getIzvodObracunskogRacuna(@PathParam("id") int bankaId,
-                                                                                     @RequestParam("startDatum") String startDatumStr,
-                                                                                     @RequestParam("endDatum") String endDatumStr) {
-        LocalDate startDatum = null;
-        LocalDate endDatum = null;
-        try {
-            startDatum = LocalDate.parse(startDatumStr);
-        } catch (Exception e) {}
-        try {
-            endDatum = LocalDate.parse(endDatumStr);
-        } catch (Exception e) {}
-
-        IzvodObracunskogRacunaDTO izvod = obracunskiRacunService.getIzvodObracunskogRacuna(bankaId, startDatum, endDatum);
-
-        return new ResponseEntity<>(izvod, HttpStatus.OK);
-    }
 }

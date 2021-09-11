@@ -91,8 +91,8 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 	}
 
 	@Override
-	public IzvodObracunskogRacunaDTO getIzvodObracunskogRacuna(int bankaId, LocalDate startDatum, LocalDate endDatum) {
-		Set<PorukaIzvodaDTO> poruke = porukaService.getPorukeIzvoda(bankaId, startDatum, endDatum);
+	public IzvodObracunskogRacunaDTO getIzvodObracunskogRacuna(int sifraBanke, LocalDate startDatum, LocalDate endDatum) {
+		List<PorukaIzvodaDTO> poruke = porukaService.getPorukeIzvoda(sifraBanke, startDatum, endDatum);
 		IzvodObracunskogRacunaDTO izvod = new IzvodObracunskogRacunaDTO(poruke);
 
 		return izvod;

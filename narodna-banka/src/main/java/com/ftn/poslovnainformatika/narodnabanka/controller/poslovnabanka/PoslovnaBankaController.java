@@ -1,5 +1,6 @@
 package com.ftn.poslovnainformatika.narodnabanka.controller.poslovnabanka;
 
+import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.IzvodObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.KlijentDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.TekuciRacunDTO;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @RestController
@@ -59,6 +61,24 @@ public class PoslovnaBankaController {
     public ResponseEntity<Set<TekuciRacunDTO>> getPoslovnaBankaRacuni(@PathVariable("sifraBanke") int sifraBanke) {
     	Set<TekuciRacunDTO> racuni = poslovnaBankaService.getPoslovnaBankaRacuni(sifraBanke);
     	return new ResponseEntity<>(racuni, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/{sifraBanke}/izvod")
+    public ResponseEntity<IzvodObracunskogRacunaDTO> getIzvodObracunskogRacuna(@PathVariable("sifraBanke") int sifraBanke,
+                                                                                     @RequestParam("startDatum") String startDatumStr,
+                                                                                     @RequestParam("endDatum") String endDatumStr) {
+        LocalDate startDatum = null;
+        LocalDate endDatum = null;
+        try {
+            startDatum = LocalDate.parse(startDatumStr);
+        } catch (Exception e) {}
+        try {
+            endDatum = LocalDate.parse(endDatumStr);
+        } catch (Exception e) {}
+
+        IzvodObracunskogRacunaDTO izvod = poslovnaBankaService.getIzvodObracunskogRacuna(sifraBanke, startDatum, endDatum);
+
+        return new ResponseEntity<>(izvod, HttpStatus.OK);
     }
 
 }
