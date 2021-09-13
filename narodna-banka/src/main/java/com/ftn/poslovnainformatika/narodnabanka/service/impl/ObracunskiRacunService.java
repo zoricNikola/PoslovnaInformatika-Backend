@@ -1,5 +1,6 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.impl;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -13,8 +14,10 @@ import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.PorukaIzvodaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.StanjeObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka.PoslovnaBankaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.model.jpa.DnevnoStanje;
+import com.ftn.poslovnainformatika.narodnabanka.service.IzvestajService;
 import com.ftn.poslovnainformatika.narodnabanka.service.PorukaService;
 import com.ftn.poslovnainformatika.narodnabanka.service.poslovnabanka.PoslovnaBankaService;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -51,6 +54,9 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 
 	@Autowired
 	private PorukaService porukaService;
+
+	@Autowired
+	private IzvestajService izvestajService;
 
 	@Autowired
 	private WebClient webClient;
@@ -119,10 +125,17 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 
 		if(poslovneBanke != null && !poslovneBanke.isEmpty()){
 			poslovneBanke.forEach(poslovnaBankaDTO -> {
-				IzvodObracunskogRacunaDTO izvodPoslovneBanke = getIzvodObracunskogRacuna(
-						poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
-				
-				forwardIzvod(poslovnaBankaDTO.getSifraBanke(), izvodPoslovneBanke);
+//				IzvodObracunskogRacunaDTO izvodPoslovneBanke = getIzvodObracunskogRacuna(
+//						poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
+//				System.out.println("IZVODDDD: " + izvodPoslovneBanke.getPorukeIzvoda().size());
+				try {
+					izvestajService.exportIzvestaj(poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (JRException e) {
+					e.printStackTrace();
+				}
+				//forwardIzvod(poslovnaBankaDTO.getSifraBanke(), izvodPoslovneBanke);
 			});
 		}
 	}

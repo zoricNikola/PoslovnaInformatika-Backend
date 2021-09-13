@@ -1,14 +1,15 @@
 package com.ftn.poslovnainformatika.narodnabanka.dto.poslovnabanka;
 
 import com.ftn.poslovnainformatika.narodnabanka.dto.ObracunskiRacunDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import lombok.*;
-
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Getter
+@Setter
 public class PoslovnaBankaDTO {
 
     private Integer sifraBanke;
@@ -19,4 +20,8 @@ public class PoslovnaBankaDTO {
 
     private ObracunskiRacunDTO obracunskiRacun;
 
+    @Override
+    public String toString() {
+        return nazivBanke;
+    }
 }

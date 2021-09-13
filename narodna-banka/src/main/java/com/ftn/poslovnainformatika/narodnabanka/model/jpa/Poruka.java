@@ -73,7 +73,7 @@ public class Poruka {
 	@JoinColumn(name = "kliring", referencedColumnName = "kliring_id")
 	private Kliring kliring;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "poruka")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "poruka")
 	private Set<Nalog> nalozi;
 	
 }
