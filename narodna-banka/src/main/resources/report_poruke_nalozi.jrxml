@@ -55,6 +55,8 @@
         </field>
     </subDataset>
     <parameter name="subReportParameter" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+    <parameter name="datumOd" class="java.time.LocalDate" isForPrompting="true"/>
+    <parameter name="datumDo" class="java.time.LocalDate" isForPrompting="true"/>
     <queryString>
         <![CDATA[]]>
     </queryString>
@@ -80,11 +82,33 @@
                     <text><![CDATA[Narodna banka]]></text>
                 </staticText>
                 <staticText>
-                    <reportElement x="360" y="43" width="205" height="20" forecolor="#FFFFFF" uuid="0a399baa-bad3-4b1a-9fe3-bb1c563e6a27"/>
-                    <textElement textAlignment="Right">
-                        <font size="14" isBold="false"/>
+                    <reportElement x="370" y="36" width="205" height="40" forecolor="#FFFFFF" uuid="0a399baa-bad3-4b1a-9fe3-bb1c563e6a27"/>
+                    <textElement textAlignment="Center">
+                        <font size="10" isBold="false"/>
                     </textElement>
-                    <text><![CDATA[Izvod obracunskog racuna]]></text>
+                    <text><![CDATA[Izvod obracunskog racuna za period od]]></text>
+                </staticText>
+                <textField>
+                    <reportElement mode="Transparent" x="400" y="46" width="73" height="20" forecolor="#FFFFFF" uuid="6858fda9-8531-42ad-b018-4506c65847c9">
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    </reportElement>
+                    <textFieldExpression><![CDATA[$P{datumOd}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="490" y="46" width="73" height="20" forecolor="#FFFFFF" uuid="d9b67517-475e-43f9-8bbc-141b6d0b5b23">
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    </reportElement>
+                    <textFieldExpression><![CDATA[$P{datumDo}]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement x="460" y="45" width="21" height="14" forecolor="#FFFFFF" uuid="ac2d0fe3-0a5b-4313-9202-5bca79655d27">
+                        <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <textElement textAlignment="Center" verticalAlignment="Top"/>
+                    <text><![CDATA[---]]></text>
                 </staticText>
             </frame>
         </band>

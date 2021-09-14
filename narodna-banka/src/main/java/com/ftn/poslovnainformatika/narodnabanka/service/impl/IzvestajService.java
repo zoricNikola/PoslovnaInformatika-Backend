@@ -35,6 +35,8 @@ public class IzvestajService implements com.ftn.poslovnainformatika.narodnabanka
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("subReportParameter", jasperSubreport);
+        parameters.put("datumOd", startDatum);
+        parameters.put("datumDo", endDatum);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/main/resources" + "/report_" + sifraBanke + ".pdf");
         return true;
