@@ -125,9 +125,8 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 
 		if(poslovneBanke != null && !poslovneBanke.isEmpty()){
 			poslovneBanke.forEach(poslovnaBankaDTO -> {
-//				IzvodObracunskogRacunaDTO izvodPoslovneBanke = getIzvodObracunskogRacuna(
-//						poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
-//				System.out.println("IZVODDDD: " + izvodPoslovneBanke.getPorukeIzvoda().size());
+				IzvodObracunskogRacunaDTO izvodPoslovneBanke = getIzvodObracunskogRacuna(
+						poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
 				try {
 					izvestajService.exportIzvestaj(poslovnaBankaDTO.getSifraBanke(), startPreviousMonth, endPreviousMonth);
 				} catch (FileNotFoundException e) {
@@ -135,7 +134,7 @@ public class ObracunskiRacunService implements com.ftn.poslovnainformatika.narod
 				} catch (JRException e) {
 					e.printStackTrace();
 				}
-				//forwardIzvod(poslovnaBankaDTO.getSifraBanke(), izvodPoslovneBanke);
+				forwardIzvod(poslovnaBankaDTO.getSifraBanke(), izvodPoslovneBanke);
 			});
 		}
 	}

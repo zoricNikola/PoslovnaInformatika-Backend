@@ -1,6 +1,5 @@
 package com.ftn.poslovnainformatika.narodnabanka.service.impl;
 
-import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.IzvodObracunskogRacunaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.dto.izvestaji.PorukaIzvodaDTO;
 import com.ftn.poslovnainformatika.narodnabanka.service.PorukaService;
 import net.sf.jasperreports.engine.*;
@@ -26,7 +25,7 @@ public class IzvestajService implements com.ftn.poslovnainformatika.narodnabanka
     public boolean exportIzvestaj(int sifraBanke, LocalDate startDatum, LocalDate endDatum) throws FileNotFoundException, JRException {
         List<PorukaIzvodaDTO> poruke = porukaService.getPorukeIzvoda(sifraBanke, startDatum, endDatum);
         System.out.println("PORUKEE: " + poruke.size());
-        File file = ResourceUtils.getFile("classpath:poruke_i_nalozi.jrxml");
+        File file = ResourceUtils.getFile("classpath:report_poruke_nalozi.jrxml");
         File fileSubreport = ResourceUtils.getFile("classpath:subreport_nalozi.jrxml");
 
         JasperReport jasperSubreport = JasperCompileManager.compileReport(fileSubreport.getAbsolutePath());
