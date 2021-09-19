@@ -18,6 +18,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.ftn.poslovnainformatika.narodnabanka.converter.DtoConverter;
@@ -70,6 +72,9 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
     
     @Autowired
     private DtoConverter<PoslovnaBanka, PoslovnaBankaDTO> bankaConverter;
+    
+    @Autowired
+    private com.ftn.poslovnainformatika.narodnabanka.service.PorukaService me;
 	
 	@Override
 	public PorukaDTO getOne(int id) {
@@ -85,7 +90,7 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		poruka = porukaRepo.save(poruka);
 		
 		if (poruka.getVrstaPoruke().equals(VrstaPoruke.MT103)) {
-			handleRTGS(poruka);
+			me.doRTGS(poruka);
 		}
 //		1. RTGS
 //			1.1 Pronaci dnevna stanja banke duznika i poverioca
@@ -114,7 +119,9 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		
 	}
 	
-	private void handleRTGS(Poruka poruka) {
+	@Override
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void doRTGS(Poruka poruka) {
 		LocalDate today = LocalDate.now();
 		
 		DnevnoStanje stanjeBankeDuznika = stanjeService.
@@ -131,26 +138,20 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 		stanjeBankePoverioca.setNovoStanje(stanjeBankePoverioca.getNovoStanje() + poruka.getUkupanIznos());
 		poruka.setDnevnoStanjeBankePoverioca(stanjeBankePoverioca);
 		
-		try {
-			poruka = porukaRepo.save(poruka);
-			
-			List<DnevnoStanje> stanja = new ArrayList<DnevnoStanje>();
-			stanja.add(stanjeBankePoverioca);
-			stanja.add(stanjeBankeDuznika);
-			stanjeService.saveAll(stanja);
-			
-//			Proslediti poruku i poslati obavestenja
-			forwardPoruka(poruka);
-			obavestenjeService.sendObavestenja(poruka);
-		} catch (Exception e) {
-//			rollback?
-		}
+		poruka = porukaRepo.save(poruka);
 		
+		List<DnevnoStanje> stanja = new ArrayList<DnevnoStanje>();
+		stanja.add(stanjeBankePoverioca);
+		stanja.add(stanjeBankeDuznika);
+		stanjeService.saveAll(stanja);
+		
+		forwardPoruka(poruka);
+		obavestenjeService.sendObavestenja(poruka);
 	}
 	
-//	@Scheduled(cron = "0 0 9-16 * * MON-FRI")
-	@Scheduled(cron = "0 */2 * * * *")
-	private void handleClearing() {
+	@Override
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void doClearing() {
 		System.out.println("Started clearing...");
 		
 		List<Poruka> poruke = porukaRepo.findByVrstaPorukeAndKliring(VrstaPoruke.MT102, null);
@@ -204,22 +205,21 @@ public class PorukaService implements com.ftn.poslovnainformatika.narodnabanka.s
 			stanje.setNovoStanje(stanje.getPrethodnoStanje() - stanje.getPrometNaTeret() + stanje.getPrometUKorist());
 		}
 		
-		try {
-			stanjeService.saveAll(stanja.values());
-			kliringRepo.save(kliring);
-			poruke = porukaRepo.saveAll(poruke);
-			
-//			Proslediti poruke i poslati obavestenja
-			for(Poruka p : poruke) {
-				forwardPoruka(p);
-				obavestenjeService.sendObavestenja(p);
-			}
-			System.out.println("...clearing done");
-		} catch (Exception e) {
-			e.printStackTrace();
-//			rollback?
-		}
+		stanjeService.saveAll(stanja.values());
+		kliringRepo.save(kliring);
+		poruke = porukaRepo.saveAll(poruke);
 		
+		for(Poruka p : poruke) {
+			forwardPoruka(p);
+			obavestenjeService.sendObavestenja(p);
+		}
+		System.out.println("...clearing done");
+}
+	
+//	@Scheduled(cron = "0 0 9-16 * * MON-FRI")
+	@Scheduled(cron = "0 */2 * * * *")
+	private void handleClearing() {
+		me.doClearing();
 	}
 
 	@Override
